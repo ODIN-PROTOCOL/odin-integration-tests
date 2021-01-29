@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@cosmjs/launchpad": "^0.23.2",
+    "crypto": "^1.0.1"
+  }
+}
