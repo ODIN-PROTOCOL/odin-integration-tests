@@ -5,18 +5,18 @@ let mnemonic = 'addict lecture cruel avoid agent tortoise little gap valley eter
 async function main (){
 const wallet = await Secp256k1HdWallet.fromMnemonic(
     // your mnemonic here 👇
-    mnemonic, undefined, "band"
+    mnemonic, undefined, "odin"
   );
   
   const [{ address }] = await wallet.getAccounts();
   console.log("Address:", address);
-;
+
   const lcdApi = "http://127.0.0.1:1317";
-  const client = new SigningCosmosClient(lcdApi, address, wallet, GasPrice.fromString('1uband'));
+  const client = new SigningCosmosClient(lcdApi, address, wallet, GasPrice.fromString('1loki'));
 
   // check our balance
   const account = await client.getAccount();
-  console.log("Account:", account);
+  console.log("Account:", account); 
 
   let msg = {
     type: "oracle/CreateDataSource",
@@ -29,7 +29,7 @@ const wallet = await Secp256k1HdWallet.fromMnemonic(
     },
   };
   let fee = {
-    amount: coins(2000, "uband"),
+    amount: coins(2000, "loki"),
     gas: "180000", // 180k
   };
   let res = await client.signAndBroadcast([msg], fee);
@@ -46,7 +46,7 @@ const wallet = await Secp256k1HdWallet.fromMnemonic(
     },
   };
   fee = {
-    amount: coins(2000, "uband"),
+    amount: coins(2000, "loki"),
     gas: "180000", // 180k
   };
   res = await client.signAndBroadcast([msg], fee);
