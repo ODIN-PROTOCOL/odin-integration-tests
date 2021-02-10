@@ -14,7 +14,7 @@ async function main (){
   const account = await client.getAccount();
   console.log("Account:", account);
 
-  const msg = {
+  let msg = {
     type: "cosmos-sdk/MsgCreateValidator",
     value: {
       description: {
@@ -44,8 +44,27 @@ async function main (){
     gas: "200000"
   }
   
-  const res = await client.signAndBroadcast([msg], fee, "");
+  let res = await client.signAndBroadcast([msg], fee, "");
   console.log('Tx result:', res)
+
+  msg = {
+    type: "oracle/Activate",
+    value: {
+      validator: Bech32.encode('odinvaloper', Bech32.decode(address).data),
+    }
+  }
+  res = await client.signAndBroadcast([msg], fee, "");
+  console.log('Tx result:', res)
+
+  // msg = {
+  //   type: "oracle/AddReporter",
+  //   value: {
+  //     validator: Bech32.encode('odinvaloper', Bech32.decode(address).data),
+  //     reporter: address
+  //   }
+  // }
+  // res = await client.signAndBroadcast([msg], fee, "");
+  // console.log('Tx result:', res)
 }
 
 main()
