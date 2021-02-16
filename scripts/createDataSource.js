@@ -1,5 +1,4 @@
-let { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins, coin, encodeBech32Pubkey, encodeSecp256k1Pubkey } = require( "@cosmjs/launchpad");
-let { Bech32 } = require("@cosmjs/encoding");
+let { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins } = require( "@cosmjs/launchpad");
 const config = require('../config.json')
 const fs = require('fs')
 const zlib = require('zlib');
@@ -9,7 +8,7 @@ async function main (){
     config.mnemonic, undefined, "odin"
   );
   
-  const [{ address, pubkey }] = await wallet.getAccounts();
+  const [{ address }] = await wallet.getAccounts();
   const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
 
   // check our balance
@@ -19,7 +18,7 @@ async function main (){
   const msg = {
     type: "oracle/CreateDataSource",
     value: {
-      name: 'golovach lena',
+      name: 'some name',
       description: 'some description',
       executable: zlib.deflateSync(fs.readFileSync('./data_sources/geo-data-v1.py')).toString('base64'),
       owner: address,
