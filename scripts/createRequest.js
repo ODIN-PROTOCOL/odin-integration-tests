@@ -2,6 +2,16 @@ let { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins } = require( "@cos
 const config = require('../config.json')
 const fs = require('fs')
 const zlib = require('zlib');
+const {
+  Obi,
+  ObiSpec,
+  ObiInteger,
+  ObiVector,
+  ObiStruct,
+  ObiString,
+  ObiBytes,
+} = require('@bandprotocol/obi.js')
+const { Client } = require('@bandprotocol/bandchain.js')
 
 async function main (){
   const wallet = await Secp256k1HdWallet.fromMnemonic(
@@ -20,7 +30,7 @@ async function main (){
     type: "oracle/Request",
     value: {
       oracle_script_id: '1',
-      calldata: Buffer.from('00000003425443000000003b9aca00', 'hex').toString('base64'),
+      calldata: new ObiStruct('{symbol:string,multiplier:u64}').encode({"symbol": "BTC", "multiplier": 1000000000}).toString('base64'),
       ask_count: '1',
       min_count: '1',
       client_id: '1',
@@ -34,6 +44,16 @@ async function main (){
   
   const res = await client.signAndBroadcast([msg], fee, "");
   console.log('Tx result:', res)
+  let requestID = res.logs[0].events[2].attributes[0].value
+  console.log('Request ID:', requestID)
+  let bandClient = new Client(config.api)
+  console.log('waiting for report')
+  await new Promise(resolve => setTimeout(resolve, 10000));
+  console.log('let check')
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  let request = await bandClient.getRequestByID(Number(requestID))
+  console.log(request)
+  console.log(request.result.responsePacketData.result.toString())
 }
 
 main()

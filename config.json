@@ -1,4 +1,5 @@
 {
   "mnemonic": "prize weapon virus foot mandate finger add strong world physical token castle knee bracket armed quit brand physical neglect film tip okay view broken",
-  "api": "http://127.0.0.1:1317"
+  "api": "http://127.0.0.1:1317",
+  "rpc": "http://127.0.0.1:26657"
 }

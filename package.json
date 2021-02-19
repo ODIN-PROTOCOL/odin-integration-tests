@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "@bandprotocol/bandchain.js": "^1.2.1",
+    "@bandprotocol/obi.js": "^1.0.7",
     "@cosmjs/launchpad": "^0.24.0-alpha.22",
+    "@cosmjs/stargate": "^0.24.0-alpha.25",
     "crypto": "^1.0.1"
   }
 }
