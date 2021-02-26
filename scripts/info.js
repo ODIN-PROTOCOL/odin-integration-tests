@@ -33,7 +33,7 @@ async function main (){
   console.log('Slashing signingInfos: ', await client.slashing.signingInfos());
   console.log('Staking redelegations: ', await client.staking.redelegations());
   console.log('Supply totalAll: ', await client.supply.totalAll());
-  
+  console.log('Fee pool:', await client.distribution.communityPool())
   
 }
 
