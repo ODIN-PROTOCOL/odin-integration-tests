@@ -31,7 +31,7 @@ async function main (){
       },
       min_self_delegation: "1",
       delegator_address: address,
-      validator_address: "",//Bech32.encode('odinvaloper', Bech32.decode(address).data),
+      validator_address: Bech32.encode('odinvaloper', Bech32.decode(address).data),
       pubkey: encodeBech32Pubkey(encodeSecp256k1Pubkey(pubkey), 'odinvalconspub'),
       value: {
         denom: "loki",
