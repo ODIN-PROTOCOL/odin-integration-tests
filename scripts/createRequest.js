@@ -29,8 +29,15 @@ async function main (){
   const msg = {
     type: "oracle/Request",
     value: {
-      oracle_script_id: '1',
-      calldata: new ObiStruct('{symbol:string,multiplier:u64}').encode({"symbol": "BTC", "multiplier": 1000000000}).toString('base64'),
+      oracle_script_id: '3',
+      calldata: new ObiStruct('{models:[string]}').encode({
+        "models": [
+          "iPhone 8",
+          "iPhone X",
+          "iPhone 11",
+          "iPhone 12"
+        ]
+      }).toString('base64'),
       ask_count: '1',
       min_count: '1',
       client_id: '1',
@@ -57,3 +64,17 @@ async function main (){
 }
 
 main()
+
+//first
+/* new ObiStruct('{symbol:string,multiplier:u64}').encode({"symbol": "BTC", "multiplier": 1000000000}).toString('base64'), */
+
+//second
+/* new ObiStruct('{uuids:[string]}').encode({
+        uuids: [
+           "F46795AA-4D66-4D8E-911D-0D8E9BD905A0",
+           "33DE13AC-F5A8-4E62-AC5A-A3127CB9F2CB",
+           "29BC341C-6CB6-4773-961E-CE098CF313AC",
+           "631EDD2F-2637-4243-9792-9E35A05B994C",
+           "B4249D2C-995F-49C4-9A31-8F1FD128AC0F"
+        ]
+     }) */
