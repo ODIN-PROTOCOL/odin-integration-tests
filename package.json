@@ -5,5 +5,8 @@
     "@cosmjs/launchpad": "^0.24.0-alpha.22",
     "@cosmjs/stargate": "^0.24.0-alpha.25",
     "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "axios": "^0.21.1"
   }
 }

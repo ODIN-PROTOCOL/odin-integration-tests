@@ -5,11 +5,7 @@ let {
   setupBankExtension,
   setupDistributionExtension,
   QueryClient,
-  StakingExtension,
-  setupMintExtension,
-  setupSlashingExtension,
   setupStakingExtension,
-  setupSupplyExtension,
 } = require("@cosmjs/stargate");
 let { Client } = require("@cosmjs/tendermint-rpc");
 
