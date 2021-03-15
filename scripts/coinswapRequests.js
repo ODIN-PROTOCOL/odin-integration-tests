@@ -26,8 +26,8 @@ function err(reason) {
 }
 
 async function main() {
-    console.log("Current rate: ", (await getCurrentRate().catch(err)).data);
-    console.log("Params: ", (await getParams().catch(err)).data);
+    // console.log("Current rate: ", (await getCurrentRate().catch(err)).data);
+    // console.log("Params: ", (await getParams().catch(err)).data);
 }
 
 main()

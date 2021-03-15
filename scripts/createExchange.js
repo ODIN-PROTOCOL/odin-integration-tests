@@ -27,7 +27,7 @@ async function main() {
         }
     }
     const fee = {
-        amount: coins(10, "loki"),
+        amount: coins(0, "loki"),
         gas: "2000000"
     }
 

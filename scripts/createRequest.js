@@ -15,15 +15,16 @@ const { Client } = require('@bandprotocol/bandchain.js')
 
 async function main (){
   const wallet = await Secp256k1HdWallet.fromMnemonic(
-    config.mnemonic, undefined, "odin"
+      config.mnemonic, undefined, "odin"
   );
-  
+
   const [{ address }] = await wallet.getAccounts();
-  console.log(address)
   const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
 
-  // check our balance
-  const account = await client.getAccount();
+  let account = await client.getAccount(config.data_provider_address);
+  console.log("Data provider account:", account);
+
+  account = await client.getAccount();
   console.log("Account:", account);
 
   const msg = {
@@ -48,7 +49,7 @@ async function main (){
     amount: coins(10, "loki"),
     gas: "2000000"
   }
-  
+
   const res = await client.signAndBroadcast([msg], fee, "");
   console.log('Tx result:', res)
   let requestID = res.logs[0].events[2].attributes[0].value
@@ -60,7 +61,10 @@ async function main (){
   await new Promise(resolve => setTimeout(resolve, 1000));
   let request = await bandClient.getRequestByID(Number(requestID))
   console.log(request)
-  console.log(request.result.responsePacketData.result.toString())
+  console.log(request.result.responsePacketData.result.toString(), request.result.responsePacketData.result.length)
+
+  account = await client.getAccount(config.data_provider_address);
+  console.log("Data Provider Account:", account);
 }
 
 main()
