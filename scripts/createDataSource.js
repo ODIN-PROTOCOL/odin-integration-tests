@@ -20,7 +20,7 @@ async function main (){
     value: {
       name: 'some name',
       description: 'some description',
-      executable: zlib.deflateSync(fs.readFileSync('./data_sources/geo-data-v1.py')).toString('base64'),
+      executable: zlib.deflateSync(fs.readFileSync('./data_sources/mock.py')).toString('base64'),
       owner: address,
       sender: address,
     }

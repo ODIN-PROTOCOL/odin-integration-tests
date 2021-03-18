@@ -20,7 +20,7 @@ async function main (){
     value: {
       name: 'some name',
       description: 'some description',
-      code: fs.readFileSync('./oracle_scripts/geo_data_sources.wasm').toString('base64'), // compression leads to error :(
+      code: fs.readFileSync('./oracle_scripts/mock.wasm').toString('base64'), // compression leads to error :(
       owner: address,
       sender: address,
       schema: "a",
