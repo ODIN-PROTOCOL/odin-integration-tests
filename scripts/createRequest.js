@@ -63,6 +63,9 @@ async function main (){
   console.log(request)
   console.log(request.result.responsePacketData.result.toString(), request.result.responsePacketData.result.length)
 
+  account = await client.getAccount();
+  console.log("Requester Account:", account);
+
   account = await client.getAccount(config.data_provider_address);
   console.log("Data Provider Account:", account);
 }
