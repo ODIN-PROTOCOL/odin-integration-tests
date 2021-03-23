@@ -18,9 +18,9 @@ async function main (){
   const msg = {
     type: "oracle/CreateDataSource",
     value: {
-      name: 'some name',
-      description: 'some description',
-      executable: zlib.deflateSync(fs.readFileSync('./data_sources/geo-data-v1.py')).toString('base64'),
+      name: 'fake data source',
+      description: 'fake data source description',
+      executable: zlib.deflateSync(fs.readFileSync('./data_sources/geo-data-v5.py')).toString('base64'),
       owner: address,
       sender: address,
     }

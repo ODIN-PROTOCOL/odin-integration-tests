@@ -1,5 +1,6 @@
 let { Secp256k1Wallet, SigningCosmosClient,GasPrice, coins } = require( "@cosmjs/launchpad");
 let { Bech32 } = require("@cosmjs/encoding");
+const config = require('../config.json')
 
 let base64 = 'qW5i7TlV5lvjqqPxLYe2tc8mA57PqUjcUQeklUGOVDA='
 
@@ -14,8 +15,7 @@ async function main (){
   const [{ address }] = await wallet.getAccounts();
   console.log("Address:", address);
 
-  const lcdApi = "http://127.0.0.1:1317";
-  const client = new SigningCosmosClient(lcdApi, address, wallet, GasPrice.fromString('1loki'));
+  const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
 
   // check our balance
   const account = await client.getAccount();

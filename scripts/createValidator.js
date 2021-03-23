@@ -53,6 +53,7 @@ async function main (){
       validator: Bech32.encode('odinvaloper', Bech32.decode(address).data),
     }
   }
+
   res = await client.signAndBroadcast([msg], fee, "");
   console.log('Tx result:', res)
 
