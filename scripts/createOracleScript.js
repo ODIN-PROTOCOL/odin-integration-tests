@@ -18,9 +18,9 @@ async function main (){
   const msg = {
     type: "oracle/CreateOracleScript",
     value: {
-      name: 'some name',
-      description: 'some description',
-      code: fs.readFileSync('./oracle_scripts/mock.wasm').toString('base64'), // compression leads to error :(
+      name: 'fake oracle script',
+      description: 'fake oracle script description',
+      code: fs.readFileSync('./oracle_scripts/geo_data_source_v5.wasm').toString('base64'), // compression leads to error :(
       owner: address,
       sender: address,
       schema: "a",
