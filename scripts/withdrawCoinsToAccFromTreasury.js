@@ -5,6 +5,11 @@ let {
     coins,
 } = require('@cosmjs/launchpad');
 const config = require('../config.json');
+const axios = require('axios')
+
+function getRequest(route) {
+    return axios.get(config.api + route, {});
+}
 
 async function main() {
     const wallet = await Secp256k1HdWallet.fromMnemonic(
@@ -35,6 +40,9 @@ async function main() {
 
     receiverAccount = await client.getAccount(config.data_provider_address);
     console.log('  Receiver balance after minting:', receiverAccount.balance);
+
+    const treasuryPoolRoute = '/minting/treasury_pool'
+    console.log('  Treasury pool: ', (await getRequest(treasuryPoolRoute)).data);
 }
 
 main();
