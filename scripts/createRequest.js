@@ -30,7 +30,7 @@ async function main (){
   const msg = {
     type: "oracle/Request",
     value: {
-      oracle_script_id: '3',
+      oracle_script_id: '4',
       calldata: new ObiStruct('{models:[string]}').encode({
         "models": [
           "iPhone 8",

@@ -12,7 +12,8 @@ let {
 } = require("@cosmjs/launchpad");
 
 let {
-    getDataProvidersPool
+    getDataProvidersPool,
+    getOracleParams,
 } = require('./oracleCustomRequests.js')
 
 let {
@@ -48,6 +49,7 @@ async function main() {
     console.log('Current rate', (await getCurrentRate()).data);
     console.log('Coinswap params', (await getParams()).data);
     console.log('Mint params: ', await client.mint.parameters());
+    console.log('Oracle params: ', (await getOracleParams()).data);
 }
 
 main()
