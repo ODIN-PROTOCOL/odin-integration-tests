@@ -4,11 +4,11 @@ const config = require('../config.json')
 const {BroadcastMode} = require("@cosmjs/launchpad");
 
 async function main (){
-    console.log(Buffer.from(config.validator_priv_key_base64, 'base64'))
+    console.log(Buffer.from(config.validator_secp256k1_priv_key_base64, 'base64'))
 
     const validatorWallet = await Secp256k1Wallet.fromKey(
         // your mnemonic here 👇
-        Buffer.from(config.validator_priv_key_base64, 'base64'), "odin"
+        Buffer.from(config.validator_secp256k1_priv_key_base64, 'base64'), "odin"
     );
 
     let [{ address }] = await validatorWallet.getAccounts();

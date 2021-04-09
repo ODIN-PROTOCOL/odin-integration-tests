@@ -1,7 +1,5 @@
 let { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins } = require( "@cosmjs/launchpad");
 const config = require('../config.json')
-const fs = require('fs')
-const zlib = require('zlib');
 const {
   Obi,
   ObiSpec,
