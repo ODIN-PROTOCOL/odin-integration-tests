@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "@bandprotocol/bandchain.js": "^1.2.1",
     "@bandprotocol/obi.js": "^1.0.7",
@@ -7,8 +8,11 @@
     "@cosmjs/launchpad": "^0.24.1",
     "@cosmjs/proto-signing": "^0.24.1",
     "@cosmjs/stargate": "^0.24.1",
+    "@cosmjs/tendermint-rpc": "^0.24.1",
+    "codec": "link:./codec",
     "crypto": "^1.0.1",
-    "protobufjs": "^6.10.2"
+    "protobufjs": "^6.10.2",
+    "ts-proto": "^1.79.2"
   },
   "devDependencies": {
     "axios": "^0.21.1"
