@@ -1,18 +1,17 @@
-let {
+const {
     QueryClient,
     setupAuthExtension,
     setupBankExtension,
     setupDistributionExtension,
     setupStakingExtension,
     setupIbcExtension,
-} = require("@cosmjs/stargate")
+} = require("@cosmjs/stargate");
 
-let {
-    ValidatorsParams,
+const {
     Tendermint34Client
-} = require("@cosmjs/tendermint-rpc")
+} = require("@cosmjs/tendermint-rpc");
 
-const config = require('../../config.json')
+const config = require('../../config.json');
 
 async function main() {
 
@@ -26,13 +25,11 @@ async function main() {
     );
 
     // Supply
-    console.log('Total supply:', await client.bank.unverified.totalSupply())
-    console.log('Fee pool:', await client.distribution.unverified.communityPool())
+    console.log('Total supply:', await client.bank.unverified.totalSupply());
+    console.log('Fee pool:', await client.distribution.unverified.communityPool());
     // Params
-    console.log('Distribution params: ', await client.distribution.unverified.params())
-    console.log('Staking params: ', await client.staking.unverified.params())
-
-    console.log('Validators: ', await client.tmClient.validators({}))
+    console.log('Distribution params: ', await client.distribution.unverified.params());
+    console.log('Staking params: ', await client.staking.unverified.params());
 
     // Example queries
     // const balances = await client.bank.balance(config.data_provider_address, "loki");

@@ -1,8 +1,8 @@
 const {DirectSecp256k1HdWallet, Registry} = require("@cosmjs/proto-signing");
+const {MsgRequestData} = require("../../dist/oracle/v1/tx.js");
 const {SigningStargateClient} = require("@cosmjs/stargate");
 const {coins} = require("@cosmjs/launchpad");
-const protobuf = require("protobufjs");
-protobuf.parse.defaults.keepCase = true;
+var Long = require("long");
 
 const {
     Obi,
@@ -21,38 +21,23 @@ async function main() {
     let [account] = await wallet.getAccounts();
 
     const msg = {
-        oracle_script_id: 1,
-        ask_count: 1,
-        min_count: 1,
-        prepare_gas: 200000,
-        execute_gas: 200000,
+        oracleScriptId: new Long(1),
+        askCount: new Long(1),
+        minCount: new Long(1),
+        prepareGas: new Long(200000),
+        executeGas: new Long(200000),
         calldata: new ObiStruct('{symbol:string,multiplier:u64}').encode({
             "symbol": "BTC",
             "multiplier": 1000000000
         }).toString('base64'),
-        client_id: "1",
+        clientId: "1",
         sender: account.address,
-        fee_limit: []
+        feeLimit: []
     };
 
     const registry = new Registry();
-
     const typeUrl = "/oracle.v1.MsgRequestData";
-    let MsgRequestData;
-    protobuf.load("proto/tx.proto", function (err, root) {
-        if (err)
-            throw err;
-
-        // Obtain a message type
-        MsgRequestData = root.lookupType("oracle.v1.MsgRequestData");
-        registry.register(typeUrl, MsgRequestData)
-
-        let buffer = MsgRequestData.encode(msg).finish();
-        console.log(buffer)
-
-        let message = MsgRequestData.decode(buffer);
-        console.log(message)
-    });
+    registry.register(typeUrl, MsgRequestData)
 
     const client = await SigningStargateClient.connectWithSigner(config.rpc, wallet, {registry: registry});
 

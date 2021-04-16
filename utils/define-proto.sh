@@ -21,6 +21,7 @@ protoc \
   "$ODIN_PROTO_DIR/mint/tx.proto" \
   "$ODIN_PROTO_DIR/mint/mint.proto" \
   "$ODIN_PROTO_DIR/mint/tx.proto" \
+  "$ODIN_PROTO_DIR/coinswap/tx.proto" \
   "$THIRD_PARTY_PROTO_DIR/cosmos/base/v1beta1/coin.proto"
 
 # Remove unnecessary codec files
