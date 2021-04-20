@@ -20,7 +20,7 @@ async function main() {
 
     const msg = {
         validatorAddress: Bech32.encode('odinvaloper', Bech32.decode(account.address).data),
-    }
+    };
 
     const msgAny = {
         typeUrl: typeUrl,

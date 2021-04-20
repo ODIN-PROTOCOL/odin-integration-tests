@@ -1,11 +1,11 @@
 const config = require("../../config.json");
 const {Bech32} = require("@cosmjs/encoding");
-const {BroadcastMsg} = require("./utils.js");
-let {MsgActivate} = require("../../dist/oracle/v1/tx.js");
+const {BroadcastMsg, HD_DERIVATION} = require("./utils.js");
+const {MsgActivate} = require("../../dist/oracle/v1/tx.js");
 const {DirectSecp256k1HdWallet, Registry} = require("@cosmjs/proto-signing");
 
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, undefined, "odin");
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
     const [account] = await wallet.getAccounts();
 
     const typeUrlMsgActivate = "/oracle.v1.MsgActivate";

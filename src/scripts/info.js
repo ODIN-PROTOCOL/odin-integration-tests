@@ -13,6 +13,10 @@ const {
 
 const config = require('../../config.json');
 
+function err(reason) {
+    console.log(reason);
+}
+
 async function main() {
 
     const client = QueryClient.withExtensions(
@@ -25,11 +29,13 @@ async function main() {
     );
 
     // Supply
-    console.log('Total supply:', await client.bank.unverified.totalSupply());
-    console.log('Fee pool:', await client.distribution.unverified.communityPool());
+    console.log('Total supply:', await client.bank.unverified.totalSupply().catch(err));
+    console.log('Fee pool:', await client.distribution.unverified.communityPool().catch(err));
     // Params
-    console.log('Distribution params: ', await client.distribution.unverified.params());
-    console.log('Staking params: ', await client.staking.unverified.params());
+    console.log('Distribution params: ', await client.distribution.unverified.params().catch(err));
+    console.log('Staking params: ', await client.staking.unverified.params().catch(err));
+    // Staking
+    console.log('Staking redelegations: ', await client.staking.unverified.validators("BOND_STATUS_UNSPECIFIED").catch(err));
 
     // Example queries
     // const balances = await client.bank.balance(config.data_provider_address, "loki");
