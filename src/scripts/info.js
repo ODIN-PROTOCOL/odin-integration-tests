@@ -35,7 +35,7 @@ async function main() {
     console.log('Distribution params: ', await client.distribution.unverified.params().catch(err));
     console.log('Staking params: ', await client.staking.unverified.params().catch(err));
     // Staking
-    console.log('Staking redelegations: ', await client.staking.unverified.validators("BOND_STATUS_UNSPECIFIED").catch(err));
+    // console.log('Staking redelegations: ', await client.staking.unverified.validators("BOND_STATUS_UNSPECIFIED").catch(err));
 
     // Example queries
     // const balances = await client.bank.balance(config.data_provider_address, "loki");

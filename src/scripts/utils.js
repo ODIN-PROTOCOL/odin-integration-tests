@@ -72,7 +72,7 @@ async function ShowProposals() {
 async function BroadcastMsg(wallet, registry, msgAny) {
     defaultRegistryTypes.map((v) => {
         registry.register(v[0], v[1]);
-    })
+    });
 
     let [account] = await wallet.getAccounts();
     const client = await SigningStargateClient.connectWithSigner(config.rpc, wallet, {registry: registry});
