@@ -1,0 +1,36 @@
+syntax = "proto3";
+package oracle.v1;
+
+message Coin {
+  string denom = 1;
+  string amount = 2;
+}
+
+// MsgRequestData is a message for sending a data oracle request.
+message MsgRequestData {
+  // OracleScriptID is the identifier of the oracle script to call.
+  int64 oracle_script_id = 1;
+  // Calldata is the OBI encoded call parameters to the oracle script.
+  bytes calldata = 2;
+  // AskCount is the number of validators to perform the oracle task.
+  uint64 ask_count = 3;
+  // MinCount is the minimum number of validators sufficient to resolve the
+  // tasks.
+  uint64 min_count = 4;
+  // ClientID is the client-provided unique identifier to tracking the request.
+  string client_id = 5;
+  // FeeLimit is the maximum tokens that will be paid to all data source
+  // providers.
+  repeated Coin fee_limit = 6;
+  // PrepareGas is amount of gas to pay to prepare raw requests
+  uint64 prepare_gas = 7;
+  // ExecuteGas is amount of gas to reserve for executing
+  uint64 execute_gas = 8;
+  // Sender is the sender of this message.
+  string sender = 9;
+}
+
+message MsgActivate {
+  // Validator is the signer of this message and the validator to be activated.
+  string validator = 1;
+}
