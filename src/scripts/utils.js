@@ -11,7 +11,8 @@ const {Tendermint34Client} = require("@cosmjs/tendermint-rpc");
 const {SigningStargateClient, defaultRegistryTypes} = require("@cosmjs/stargate");
 const {Bech32} = require("@cosmjs/encoding");
 const {coins} = require("@cosmjs/launchpad");
-const {stringToPath} = require("@cosmjs/crypto")
+const {stringToPath} = require("@cosmjs/crypto");
+const Long = require("long");
 const config = require('../../config.json');
 
 const HD_DERIVATION = stringToPath("m/44'/118'/0'/0/0");
@@ -27,7 +28,8 @@ async function ShowValidatorOutstandingRewards(account) {
     );
 
     const rewards = await queryClient.distribution.unverified.validatorOutstandingRewards(Bech32.encode('odinvaloper', Bech32.decode(account.address).data)).catch(err);
-    console.log("Outstanding rewards: ", rewards);
+    console.log("Reward: ", Long.fromString(rewards.rewards.rewards[0].amount));
+    console.log("Outstanding rewards: ", rewards.rewards.rewards);
 }
 
 async function ShowBalances(account) {
@@ -60,14 +62,14 @@ async function ShowValidator(account) {
     console.log("Validator: ", rewards);
 }
 
-async function ShowProposals() {
-    const queryClient = QueryClient.withExtensions(
-        await Tendermint34Client.connect(config.rpc),
-        setupMintExtension,
-    );
-
-    console.log("Treasury pool: ", (await queryClient.mint.unverified.treasuryPool().catch(err)));
-}
+// async function ShowProposals() {
+//     const queryClient = QueryClient.withExtensions(
+//         await Tendermint34Client.connect(config.rpc),
+//         setupMintExtension,
+//     );
+//
+//     console.log("Proposals: ", (await queryClient.gov..catch(err)));
+// }
 
 async function BroadcastMsg(wallet, registry, msgAny) {
     defaultRegistryTypes.map((v) => {

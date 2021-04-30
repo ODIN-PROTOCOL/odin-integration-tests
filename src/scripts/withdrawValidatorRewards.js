@@ -1,11 +1,11 @@
 const {MsgWithdrawValidatorCommission} = require("@cosmjs/stargate/build/codec/cosmos/distribution/v1beta1/tx");
 const {DirectSecp256k1HdWallet, Registry} = require("@cosmjs/proto-signing");
-const {BroadcastMsg, ShowBalances, ShowValidatorOutstandingRewards} = require("./utils.js");
+const {BroadcastMsg, ShowBalances, ShowValidatorOutstandingRewards, HD_DERIVATION} = require("./utils.js");
 let {Bech32} = require("@cosmjs/encoding");
-const config = require('../../config.json')
+const config = require('../../config.json');
 
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, undefined, "odin");
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
     let [account] = await wallet.getAccounts();
 
     // show outstanding rewards

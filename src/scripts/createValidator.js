@@ -21,9 +21,9 @@ async function main() {
             details: "",
         },
         commission: {
-            rate: "1",
-            maxRate: "2",
-            maxChangeRate: "1"
+            rate: "100000000000000000",
+            maxRate: "200000000000000000",
+            maxChangeRate: "100000000000000000"
         },
         minSelfDelegation: "1",
         delegatorAddress: account.address,

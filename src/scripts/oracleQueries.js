@@ -5,13 +5,17 @@ const {
 const {
     Tendermint34Client
 } = require("@cosmjs/tendermint-rpc");
+const {HD_DERIVATION} = require("./utils.js");
+const {DirectSecp256k1HdWallet} = require("@cosmjs/proto-signing");
+const {Bech32} = require("@cosmjs/encoding");
 const Long = require("long");
-
 const config = require('../../config.json')
 const {err} = require("./utils");
 
 // TODO: handle long returns
 async function main() {
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
+    let [account] = await wallet.getAccounts();
 
     const client = QueryClient.withExtensions(
         await Tendermint34Client.connect(config.rpc),
@@ -31,9 +35,9 @@ async function main() {
     if (counts.requestCount > 0) {
         console.log("Request: ", (await client.oracle.unverified.request(new Long(1)).catch(err)));
     }
-    console.log("Validator: ", await client.oracle.unverified.validator("odinvaloper1zd9lthygtlegm2ylnganyutr0c8pg8qzuec0a4"));
-    console.log("Reporters: ", await client.oracle.unverified.reporters("odinvaloper1zd9lthygtlegm2ylnganyutr0c8pg8qzuec0a4"));
-    console.log("Active Validators: ", await client.oracle.unverified.activeValidators());
+    console.log("Validator: ", await client.oracle.unverified.validator(Bech32.encode('odinvaloper', Bech32.decode(account.address).data)));
+    console.log("Reporters: ", await client.oracle.unverified.reporters(Bech32.encode('odinvaloper', Bech32.decode(account.address).data)));
+    console.log("Active Validators: ", (await client.oracle.unverified.activeValidators()).count.toString());
     // TODO: revisit when GRPC request search works
     // if (counts.requestCount > 0) {
     //     console.log("Request Search: ", await client.oracle.unverified.requestSearch(new Long(1), "", new Long(1), new Long(1)));
