@@ -203,6 +203,11 @@ export interface OracleResponsePacketData {
   result: Uint8Array;
 }
 
+export interface RequestResult {
+  requestPacketData?: OracleRequestPacketData;
+  responsePacketData?: OracleResponsePacketData;
+}
+
 /** Result encodes a result of request and store in chain */
 export interface Result {
   /**
@@ -1612,6 +1617,119 @@ export const OracleResponsePacketData = {
       message.result = object.result;
     } else {
       message.result = new Uint8Array();
+    }
+    return message;
+  },
+};
+
+const baseRequestResult: object = {};
+
+export const RequestResult = {
+  encode(
+    message: RequestResult,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.requestPacketData !== undefined) {
+      OracleRequestPacketData.encode(
+        message.requestPacketData,
+        writer.uint32(10).fork()
+      ).ldelim();
+    }
+    if (message.responsePacketData !== undefined) {
+      OracleResponsePacketData.encode(
+        message.responsePacketData,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RequestResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRequestResult } as RequestResult;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.requestPacketData = OracleRequestPacketData.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 2:
+          message.responsePacketData = OracleResponsePacketData.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RequestResult {
+    const message = { ...baseRequestResult } as RequestResult;
+    if (
+      object.requestPacketData !== undefined &&
+      object.requestPacketData !== null
+    ) {
+      message.requestPacketData = OracleRequestPacketData.fromJSON(
+        object.requestPacketData
+      );
+    } else {
+      message.requestPacketData = undefined;
+    }
+    if (
+      object.responsePacketData !== undefined &&
+      object.responsePacketData !== null
+    ) {
+      message.responsePacketData = OracleResponsePacketData.fromJSON(
+        object.responsePacketData
+      );
+    } else {
+      message.responsePacketData = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: RequestResult): unknown {
+    const obj: any = {};
+    message.requestPacketData !== undefined &&
+      (obj.requestPacketData = message.requestPacketData
+        ? OracleRequestPacketData.toJSON(message.requestPacketData)
+        : undefined);
+    message.responsePacketData !== undefined &&
+      (obj.responsePacketData = message.responsePacketData
+        ? OracleResponsePacketData.toJSON(message.responsePacketData)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<RequestResult>): RequestResult {
+    const message = { ...baseRequestResult } as RequestResult;
+    if (
+      object.requestPacketData !== undefined &&
+      object.requestPacketData !== null
+    ) {
+      message.requestPacketData = OracleRequestPacketData.fromPartial(
+        object.requestPacketData
+      );
+    } else {
+      message.requestPacketData = undefined;
+    }
+    if (
+      object.responsePacketData !== undefined &&
+      object.responsePacketData !== null
+    ) {
+      message.responsePacketData = OracleResponsePacketData.fromPartial(
+        object.responsePacketData
+      );
+    } else {
+      message.responsePacketData = undefined;
     }
     return message;
   },
