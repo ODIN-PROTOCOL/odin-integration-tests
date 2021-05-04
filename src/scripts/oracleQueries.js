@@ -28,12 +28,16 @@ async function main() {
     // console.log("Data: ", (await client.oracle.unverified.data("0acc4f276eadba8e1f496d4c6f35adfef3af19f127cb49d124f96bfdfb1cf61d").catch(err)));
     if (counts.dataSourceCount > 0) {
         console.log("Data source: ", (await client.oracle.unverified.dataSource(new Long(1)).catch(err)));
+        console.log("Data sources: ", (await client.oracle.unverified.dataSources(new Long(2), new Long(0))));
     }
     if (counts.oracleScriptCount > 0) {
         console.log("Oracle script: ", (await client.oracle.unverified.oracleScript(new Long(1)).catch(err)));
+        console.log("Oracle scripts: ", (await client.oracle.unverified.oracleScripts(new Long(2), new Long(0))));
     }
     if (counts.requestCount > 0) {
         console.log("Request: ", (await client.oracle.unverified.request(new Long(1)).catch(err)));
+        console.log("Reports: ", (await client.oracle.unverified.reports(new Long(1), new Long(2), new Long(0))));
+        console.log("Requests: ", (await client.oracle.unverified.requests(new Long(2), new Long(0))));
     }
     console.log("Validator: ", await client.oracle.unverified.validator(Bech32.encode('odinvaloper', Bech32.decode(account.address).data)));
     console.log("Reporters: ", await client.oracle.unverified.reporters(Bech32.encode('odinvaloper', Bech32.decode(account.address).data)));
