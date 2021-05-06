@@ -17,7 +17,7 @@ async function main (){
   );
 
   const [{ address }] = await wallet.getAccounts();
-  const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
+  const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1odin'));
 
   let account = await client.getAccount(config.data_provider_address);
   console.log("Data provider account:", account);
@@ -44,7 +44,7 @@ async function main (){
     }
   }
   const fee = {
-    amount: coins(10, "loki"),
+    amount: coins(10, "odin"),
     gas: "2000000"
   }
 

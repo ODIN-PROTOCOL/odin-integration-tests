@@ -24,7 +24,7 @@ async function main() {
                 ]
             }).finish()
         },
-        initialDeposit: coins(1000000000, "loki"),
+        initialDeposit: coins(1000000000, "odin"),
         proposer: account.address
     }
 

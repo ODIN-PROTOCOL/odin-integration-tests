@@ -17,7 +17,7 @@ async function main() {
 
     const msg = {
         from: "geo",
-        to: "loki",
+        to: "odin",
         amount: coin(10, "geo"),
         requester: account.address,
     }

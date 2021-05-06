@@ -17,7 +17,7 @@ async function main() {
     const msg = {
         delegatorAddress: account.address,
         validatorAddress: Bech32.encode('odinvaloper', Bech32.decode(account.address).data),
-        amount: coin(10000000, "loki")
+        amount: coin(10000000, "odin")
     }
 
     const msgAny = {

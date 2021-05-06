@@ -14,7 +14,7 @@ async function main (){
     let [{ address }] = await validatorWallet.getAccounts();
     console.log("Address:", address);
 
-    let client = new SigningCosmosClient(config.api, address, validatorWallet, GasPrice.fromString('1loki'));
+    let client = new SigningCosmosClient(config.api, address, validatorWallet, GasPrice.fromString('1odin'));
 
     // check our balance
     let validatorAccount = await client.getAccount();
@@ -26,7 +26,7 @@ async function main (){
 
     let pubkey;
     [{address, pubkey}] = await wallet.getAccounts();
-    client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'), GasPrice.fromString("1000000loki"), BroadcastMode.Block);
+    client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1odin'), GasPrice.fromString("1000000odin"), BroadcastMode.Block);
 
     // check our balance
     let account = await client.getAccount();
@@ -38,14 +38,14 @@ async function main (){
             delegator_address: address,
             validator_address: Bech32.encode('odinvaloper', Bech32.decode(validatorAccount.address).data),
             amount: {
-                denom: "loki",
+                denom: "odin",
                 amount: "1000000000"
             }
         }
     }
 
     const fee = {
-        amount: coins(0, "loki"),
+        amount: coins(0, "odin"),
         gas: "200000"
     }
 

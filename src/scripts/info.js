@@ -28,6 +28,8 @@ async function main() {
         setupIbcExtension
     );
 
+    client.tx
+
     // Supply
     console.log('Total supply:', await client.bank.unverified.totalSupply().catch(err));
     console.log('Fee pool:', await client.distribution.unverified.communityPool().catch(err));
@@ -38,7 +40,7 @@ async function main() {
     // console.log('Staking redelegations: ', await client.staking.unverified.validators("BOND_STATUS_UNSPECIFIED").catch(err));
 
     // Example queries
-    // const balances = await client.bank.balance(config.data_provider_address, "loki");
+    // const balances = await client.bank.balance(config.data_provider_address, "odin");
     // console.log('Balances: ', balances);
     // console.log('Validators: ', await client.staking.validators());
     // console.log('Distribution parameters: ', await client.distribution.parameters());

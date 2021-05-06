@@ -18,8 +18,8 @@ async function main() {
     );
 
     console.log("Params: ", (await client.coinswap.unverified.params().catch(err)));
-    console.log("Exchange from 'geo' to 'loki':", (await client.coinswap.unverified.rate("geo", "loki").catch(err)));
-    console.log("Exchange from 'eth' to 'loki':", (await client.coinswap.unverified.rate("eth", "loki").catch(err)));
+    console.log("Exchange from 'geo' to 'odin':", (await client.coinswap.unverified.rate("geo", "odin").catch(err)));
+    console.log("Exchange from 'eth' to 'odin':", (await client.coinswap.unverified.rate("eth", "odin").catch(err)));
 }
 
 if (require.main === module) {

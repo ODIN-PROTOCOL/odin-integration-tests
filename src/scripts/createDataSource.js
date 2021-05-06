@@ -18,7 +18,7 @@ async function main() {
         name: 'fake data source',
         description: 'fake data source description',
         executable: fs.readFileSync('./data_sources/geo-data-v5.py').toString('base64'),
-        fee: coins(1, "loki"),
+        fee: coins(1, "odin"),
         owner: account.address,
         sender: account.address,
     };

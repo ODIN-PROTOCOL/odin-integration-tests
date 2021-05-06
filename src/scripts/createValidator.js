@@ -33,7 +33,7 @@ async function main() {
             value: PubKey.encode({key: account.pubkey}).finish()
         },
         value: {
-            denom: "loki",
+            denom: "odin",
             amount: "10000000"
         }
     };
