@@ -19,7 +19,7 @@ async function main() {
 
     let report = await client.oracle.unverified.request(new Long(1)).catch(err);
     console.log("Raw report: ", report);
-    console.log("Result: \n", new TextDecoder().decode(report.responsePacketData.result));
+    console.log("Result: \n", new TextDecoder().decode(report.request.responsePacketData.result));
 }
 
 if (require.main === module) {
