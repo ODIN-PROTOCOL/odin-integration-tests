@@ -80,7 +80,7 @@ async function BroadcastMsg(wallet, registry, msgAny) {
     const client = await SigningStargateClient.connectWithSigner(config.rpc, wallet, {registry: registry});
 
     const fee = {
-        amount: coins(0, "odin"),
+        amount: coins(0, "loki"),
         gas: "2000000"
     }
 

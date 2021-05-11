@@ -14,7 +14,7 @@ async function main() {
     );
 
     const [{address, pubkey}] = await wallet.getAccounts();
-    const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1odin'), GasPrice.fromString("1000000odin"), BroadcastMode.Block);
+    const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'), GasPrice.fromString("1000000loki"), BroadcastMode.Block);
 
     // check our balance
     const account = await client.getAccount();
@@ -29,7 +29,7 @@ async function main() {
         }
     }
     const fee = {
-        amount: coins(0, "odin"),
+        amount: coins(0, "loki"),
         gas: "200000"
     }
 

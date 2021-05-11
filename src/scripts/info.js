@@ -38,7 +38,7 @@ async function main() {
     // console.log('Staking redelegations: ', await client.staking.unverified.validators("BOND_STATUS_UNSPECIFIED").catch(err));
 
     // Example queries
-    // const balances = await client.bank.balance(config.data_provider_address, "odin");
+    // const balances = await client.bank.balance(config.data_provider_address, "loki");
     // console.log('Balances: ', balances);
     // console.log('Validators: ', await client.staking.validators());
     // console.log('Distribution parameters: ', await client.distribution.parameters());

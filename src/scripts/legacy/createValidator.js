@@ -8,7 +8,7 @@ async function main (){
   );
   
   const [{ address, pubkey }] = await wallet.getAccounts();
-  const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1odin'));
+  const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
 
   // check our balance
   const account = await client.getAccount();
@@ -34,13 +34,13 @@ async function main (){
       validator_address: Bech32.encode('odinvaloper', Bech32.decode(address).data),
       pubkey: encodeBech32Pubkey(encodeSecp256k1Pubkey(pubkey), 'odinvalconspub'),
       value: {
-        denom: "odin",
+        denom: "loki",
         amount: "10000000"
       }
     }
   }
   const fee = {
-    amount: coins(10, "odin"),
+    amount: coins(10, "loki"),
     gas: "200000"
   }
   

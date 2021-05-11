@@ -36,7 +36,7 @@ async function main() {
         }).toString('base64'),
         clientId: "1",
         sender: account.address,
-        feeLimit: coins(1, "odin")
+        feeLimit: coins(1, "loki")
     };
 
     const registry = new Registry();

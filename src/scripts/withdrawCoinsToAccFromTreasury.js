@@ -17,7 +17,7 @@ async function main() {
     registry.register(typeUrl, MsgWithdrawCoinsToAccFromTreasury);
 
     const msg = {
-        amount: coins(10, 'odin'),
+        amount: coins(10, 'loki'),
         receiver: account.address,
         sender: account.address,
     }
