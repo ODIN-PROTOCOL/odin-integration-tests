@@ -3,7 +3,6 @@ const {MsgCreateDataSource} = require("../../dist/oracle/v1/tx.js");
 const {BroadcastMsg, HD_DERIVATION} = require("./utils.js");
 const {coins} = require("@cosmjs/launchpad");
 const config = require('../../config.json');
-const zlib = require('zlib');
 const fs = require('fs');
 
 async function main() {

@@ -8,7 +8,6 @@ const {
 
 const config = require('../../config.json');
 const {err} = require("./utils");
-const Long = require("long");
 
 const statusDeposit = 1;
 const statusVoting = 2;
