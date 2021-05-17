@@ -36,6 +36,9 @@ function setupGovExtension(base) {
                 deposits: async (proposalId) => {
                     const {deposits} = await queryService.Deposits({proposalId: proposalId})
                     return deposits
+                },
+                tallyResult: async (proposalId) => {
+                    return await queryService.TallyResult({proposalId: proposalId});
                 }
             },
         },

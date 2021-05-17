@@ -8,6 +8,7 @@ const {
 
 const config = require('../../config.json');
 const {err} = require("./utils");
+const Long = require("long");
 
 const statusDeposit = 1;
 const statusVoting = 2;
@@ -25,10 +26,18 @@ async function main() {
     console.log("Params tallying: ", (await client.gov.unverified.params("tallying").catch(err)));
     console.log("Params deposit: ", (await client.gov.unverified.params("deposit").catch(err)));
 
-    console.log("Proposals deposit: ", (await client.gov.unverified.proposals(statusDeposit, "", "").catch(err)));
-    console.log("Proposals voting: ", (await client.gov.unverified.proposals(statusVoting, "", "").catch(err)));
-    console.log("Proposals passed: ", (await client.gov.unverified.proposals(statusPassed, "", "").catch(err)));
-    console.log("Proposals rejected: ", (await client.gov.unverified.proposals(statusRejected, "", "").catch(err)));
+    const proposalsDeposit = (await client.gov.unverified.proposals(statusDeposit, "", "").catch(err));
+    console.log("Proposals deposit: ", proposalsDeposit);
+    const proposalsVoting = (await client.gov.unverified.proposals(statusVoting, "", "").catch(err));
+    console.log("Proposals voting: ", proposalsVoting);
+    const proposalsPassed = (await client.gov.unverified.proposals(statusPassed, "", "").catch(err));
+    console.log("Proposals passed: ", proposalsPassed);
+    const proposalsRejected = (await client.gov.unverified.proposals(statusRejected, "", "").catch(err));
+    console.log("Proposals rejected: ", proposalsRejected);
+
+    if (proposalsDeposit.length + proposalsPassed.length + proposalsVoting.length + proposalsRejected.length > 0) {
+        console.log("Tally result:", (await client.gov.unverified.tallyResult(new Long(1)).catch(err)));
+    }
 
     // console.log("Proposal: ", (await client.gov.unverified.proposal(new Long(1)).catch(err)));
 }
