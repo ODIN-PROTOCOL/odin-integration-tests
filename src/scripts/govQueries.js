@@ -37,6 +37,8 @@ async function main() {
 
     if (proposalsDeposit.length + proposalsPassed.length + proposalsVoting.length + proposalsRejected.length > 0) {
         console.log("Tally result:", (await client.gov.unverified.tallyResult(new Long(1)).catch(err)));
+        console.log("Votes result:", (await client.gov.unverified.votes(new Long(1)).catch(err)));
+        console.log("Vote result:", (await client.gov.unverified.vote(new Long(1), "odin1pl07tk6hcpp2an3rug75as4dfgd743qp80g63g").catch(err)));
     }
 
     // console.log("Proposal: ", (await client.gov.unverified.proposal(new Long(1)).catch(err)));
