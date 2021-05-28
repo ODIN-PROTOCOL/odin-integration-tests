@@ -16,9 +16,9 @@ async function main() {
     registry.register(typeUrl, MsgExchange);
 
     const msg = {
-        from: "geo",
-        to: "loki",
-        amount: coin(10, "geo"),
+        from: "loki",
+        to: "minigeo",
+        amount: coin(1, "loki"),
         requester: account.address,
     }
 
