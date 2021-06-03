@@ -1,19 +1,14 @@
-let { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins } = require( "@cosmjs/launchpad");
+const { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins } = require( "@cosmjs/launchpad");
 const config = require('../../../config.json')
-const {
-  Obi,
-  ObiSpec,
-  ObiInteger,
-  ObiVector,
-  ObiStruct,
-  ObiString,
-  ObiBytes,
-} = require('@bandprotocol/obi.js')
+const {ObiStruct} = require('@bandprotocol/obi.js')
 const { Client } = require('@bandprotocol/bandchain.js')
 
 async function main (){
   const wallet = await Secp256k1HdWallet.fromMnemonic(
-      config.mnemonic, undefined, "odin"
+      config.mnemonic,
+      {
+        prefix:"odin"
+      }
   );
 
   const [{ address }] = await wallet.getAccounts();
@@ -68,7 +63,7 @@ async function main (){
   console.log("Data Provider Account:", account);
 }
 
-main()
+main();
 
 //first
 /* new ObiStruct('{symbol:string,multiplier:u64}').encode({"symbol": "BTC", "multiplier": 1000000000}).toString('base64'), */

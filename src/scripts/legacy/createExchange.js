@@ -1,4 +1,4 @@
-let {Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins, coin} = require("@cosmjs/launchpad");
+const {Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins, coin} = require("@cosmjs/launchpad");
 const config = require('../../../config.json')
 
 function err(resp) {
@@ -7,7 +7,10 @@ function err(resp) {
 
 async function main() {
     const wallet = await Secp256k1HdWallet.fromMnemonic(
-        config.mnemonic, undefined, "odin"
+        config.mnemonic,
+        {
+            prefix:"odin"
+        }
     );
 
     const [{address}] = await wallet.getAccounts();
@@ -20,9 +23,9 @@ async function main() {
     const msg = {
         type: "coinswap/Exchange",
         value: {
-            from: "geo",
+            from: "minigeo",
             to: "loki",
-            amount: coin(10, "geo"),
+            amount: coin(10, "minigeo"),
             requester: address,
         }
     }
@@ -38,4 +41,4 @@ async function main() {
     console.log("Account:", account);
 }
 
-main()
+main();

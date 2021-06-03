@@ -3,8 +3,6 @@ let {
     SigningCosmosClient,
     GasPrice,
     coins,
-    encodeBech32Pubkey,
-    encodeSecp256k1Pubkey
 } = require("@cosmjs/launchpad");
 let {Bech32} = require("@cosmjs/encoding");
 let {
@@ -15,10 +13,13 @@ const config = require('../../../config.json')
 
 async function main() {
     const wallet = await Secp256k1HdWallet.fromMnemonic(
-        config.mnemonic, undefined, "odin"
+        config.mnemonic,
+        {
+            prefix:"odin"
+        }
     );
 
-    const [{address, pubkey}] = await wallet.getAccounts();
+    const [{address}] = await wallet.getAccounts();
     const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
 
     // check our balance
@@ -50,4 +51,4 @@ async function main() {
     console.log("Account:", account);
 }
 
-main()
+main();

@@ -13,7 +13,10 @@ function getRequest(route) {
 
 async function main() {
     const wallet = await Secp256k1HdWallet.fromMnemonic(
-        config.mnemonic, undefined, 'odin'
+        config.mnemonic,
+        {
+            prefix:"odin"
+        }
     );
 
     const [{address}] = await wallet.getAccounts();

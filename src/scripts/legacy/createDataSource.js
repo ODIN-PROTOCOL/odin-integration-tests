@@ -1,13 +1,16 @@
-let { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins } = require( "@cosmjs/launchpad");
+const { Secp256k1HdWallet, SigningCosmosClient, GasPrice, coins } = require( "@cosmjs/launchpad");
 const config = require('../../../config.json')
 const fs = require('fs')
 const zlib = require('zlib');
 
 async function main (){
   const wallet = await Secp256k1HdWallet.fromMnemonic(
-    config.mnemonic, undefined, "odin"
+      config.mnemonic,
+      {
+        prefix:"odin"
+      }
   );
-  
+
   const [{ address }] = await wallet.getAccounts();
   const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
 
@@ -29,9 +32,9 @@ async function main (){
     amount: coins(10, "loki"),
     gas: "200000"
   }
-  
+
   const res = await client.signAndBroadcast([msg], fee, "");
   console.log('Tx result:', res)
 }
 
-main()
+main();

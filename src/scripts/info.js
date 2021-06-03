@@ -28,8 +28,6 @@ async function main() {
         setupIbcExtension
     );
 
-    client.tx
-
     // Supply
     console.log('Total supply:', await client.bank.unverified.totalSupply().catch(err));
     console.log('Fee pool:', await client.distribution.unverified.communityPool().catch(err));

@@ -19,4 +19,4 @@ async function main() {
     console.log('Tx by hash:', await client.getTx(txHash).catch(err));
 }
 
-main()
+main();

@@ -1,5 +1,5 @@
 const config = require('../../../config.json')
-let {
+const {
     LcdClient,
     setupAuthExtension,
     setupBankExtension,
@@ -11,12 +11,12 @@ let {
     setupSupplyExtension,
 } = require("@cosmjs/launchpad");
 
-let {
+const {
     getDataProvidersPool,
     getOracleParams,
 } = require('./oracleCustomRequests.js')
 
-let {
+const {
     getParams,
     getCurrentRate
 } = require('./coinswapRequests')
@@ -53,4 +53,4 @@ async function main() {
     console.log('Oracle params: ', (await getOracleParams()).data);
 }
 
-main()
+main();
