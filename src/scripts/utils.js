@@ -15,7 +15,8 @@ const {stringToPath} = require("@cosmjs/crypto");
 const Long = require("long");
 const config = require('../../config.json');
 
-const HD_DERIVATION = stringToPath("m/44'/118'/0'/0/0");
+const HD_DERIVATION = stringToPath("m/44'/494'/0'/0/0");
+const MNEMONIC_SIZE = 24;
 
 function err(reason) {
     console.log(reason);
