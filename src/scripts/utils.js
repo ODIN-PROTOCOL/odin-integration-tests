@@ -15,7 +15,8 @@ const {stringToPath} = require("@cosmjs/crypto");
 const Long = require("long");
 const config = require('../../config.json');
 
-const HD_DERIVATION = stringToPath("m/44'/118'/0'/0/0");
+const HD_DERIVATION = stringToPath("m/44'/494'/0'/0/0");
+const MNEMONIC_SIZE = 24;
 
 function err(reason) {
     console.log(reason);
@@ -67,7 +68,6 @@ async function BroadcastMsg(wallet, registry, msgAny) {
         registry.register(v[0], v[1]);
     });
 
-
     let [account] = await wallet.getAccounts();
     const client = await SigningStargateClient.connectWithSigner(config.rpc, wallet, {registry: registry});
 
@@ -89,5 +89,6 @@ module.exports = {
     ShowTreasuryPool,
     ShowValidator,
     err,
-    HD_DERIVATION
+    HD_DERIVATION,
+    MNEMONIC_SIZE
 }
