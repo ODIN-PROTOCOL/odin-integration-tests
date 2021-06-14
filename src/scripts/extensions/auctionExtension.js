@@ -17,8 +17,8 @@ function setupAuctionExtension(base) {
                     const {params} = await queryService.Params({})
                     return params;
                 },
-                rate: async (from, to) => {
-                    const {rate} = await queryService.Rate({from: from, to: to});
+                status: async () => {
+                    const {rate} = await queryService.AuctionStatus({});
                     return rate;
                 },
             },
