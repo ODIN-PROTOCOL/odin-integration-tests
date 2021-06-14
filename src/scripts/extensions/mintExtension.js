@@ -6,7 +6,7 @@ const cosmjsUtils = require("@cosmjs/stargate/build/queries/utils");
 const queryMint = require("../../../dist/mint/query.js")
 
 function setupMintExtension(base) {
-    const rpc = cosmjsUtils.createRpc(base);
+    const rpc = cosmjsUtils.createProtobufRpcClient(base);
     // Use this service to get easy typed access to query methods
     // This cannot be used for proof verification
     const queryService = new queryMint.QueryClientImpl(rpc);

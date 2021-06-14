@@ -15,7 +15,7 @@ const {stringToPath} = require("@cosmjs/crypto");
 const Long = require("long");
 const config = require('../../config.json');
 
-const HD_DERIVATION = stringToPath("m/44'/494'/0'/0/0");
+const HD_DERIVATION = stringToPath("m/44'/118'/0'/0/0");
 const MNEMONIC_SIZE = 24;
 
 function err(reason) {
@@ -28,7 +28,9 @@ async function ShowValidatorOutstandingRewards(account) {
         setupDistributionExtension,
     );
 
-    const rewards = await queryClient.distribution.validatorOutstandingRewards(Bech32.encode('odinvaloper', Bech32.decode(account.address).data)).catch(err);
+    const rewards = await queryClient.distribution.validatorOutstandingRewards(
+        Bech32.encode('odinvaloper', Bech32.decode(account.address).data)
+    ).catch(err);
     console.log("Reward: ", Long.fromString(rewards.rewards.rewards[0].amount));
     console.log("Outstanding rewards: ", rewards.rewards.rewards);
 }

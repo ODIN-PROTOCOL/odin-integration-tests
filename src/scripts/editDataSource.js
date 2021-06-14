@@ -3,7 +3,6 @@ const {MsgEditDataSource} = require("../../dist/oracle/v1/tx.js");
 const {BroadcastMsg, HD_DERIVATION} = require("./utils.js");
 const config = require('../../config.json');
 const Long = require("long");
-const zlib = require('zlib');
 const fs = require('fs');
 
 async function main() {

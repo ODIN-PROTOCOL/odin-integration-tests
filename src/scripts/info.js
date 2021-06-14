@@ -29,11 +29,11 @@ async function main() {
     );
 
     // Supply
-    console.log('Total supply:', await client.bank.unverified.totalSupply().catch(err));
-    console.log('Fee pool:', await client.distribution.unverified.communityPool().catch(err));
+    console.log('Total supply:', await client.bank.totalSupply().catch(err));
+    console.log('Fee pool:', await client.distribution.communityPool().catch(err));
     // Params
-    console.log('Distribution params: ', await client.distribution.unverified.params().catch(err));
-    console.log('Staking params: ', await client.staking.unverified.params().catch(err));
+    console.log('Distribution params: ', await client.distribution.params().catch(err));
+    console.log('Staking params: ', await client.staking.params().catch(err));
     // Staking
     // console.log('Staking redelegations: ', await client.staking.unverified.validators("BOND_STATUS_BONDED").catch(err));
 
