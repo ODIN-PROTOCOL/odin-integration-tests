@@ -1,5 +1,5 @@
-let { Secp256k1HdWallet, Secp256k1Wallet, SigningCosmosClient,GasPrice, coins } = require( "@cosmjs/launchpad");
-let { Bech32 } = require("@cosmjs/encoding");
+const { Secp256k1HdWallet, Secp256k1Wallet, SigningCosmosClient,GasPrice, coins } = require( "@cosmjs/launchpad");
+const { Bech32 } = require("@cosmjs/encoding");
 const config = require('../../../config.json')
 const {BroadcastMode} = require("@cosmjs/launchpad");
 
@@ -21,7 +21,10 @@ async function main (){
     console.log("Validator Account:", validatorAccount);
 
     const wallet = await Secp256k1HdWallet.fromMnemonic(
-        config.mnemonic, undefined, "odin"
+        config.mnemonic,
+        {
+            prefix:"odin"
+        }
     );
 
     let pubkey;
@@ -29,10 +32,10 @@ async function main (){
     client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'), GasPrice.fromString("1000000loki"), BroadcastMode.Block);
 
     // check our balance
-    let account = await client.getAccount();
+    const account = await client.getAccount();
     console.log("Account:", account);
 
-    let msg = {
+    const msg = {
         type: "cosmos-sdk/MsgDelegate",
         value: {
             delegator_address: address,
@@ -49,8 +52,8 @@ async function main (){
         gas: "200000"
     }
 
-    let res = await client.signAndBroadcast([msg], fee, "");
+    const res = await client.signAndBroadcast([msg], fee, "");
     console.log('Tx result:', res)
 }
 
-main()
+main();

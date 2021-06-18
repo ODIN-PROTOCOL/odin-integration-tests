@@ -6,8 +6,14 @@ const config = require('../../config.json');
 const fs = require('fs');
 
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
-    let [account] = await wallet.getAccounts();
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+        config.mnemonic,
+        {
+            hdPaths: [HD_DERIVATION],
+            prefix: "odin"
+        }
+    );
+    let [account] = await wallet.getAccounts()
 
     const registry = new Registry();
     const typeUrl = "/oracle.v1.MsgCreateDataSource";
@@ -30,4 +36,4 @@ async function main() {
     await BroadcastMsg(wallet, registry, msgAny);
 }
 
-main()
+main();

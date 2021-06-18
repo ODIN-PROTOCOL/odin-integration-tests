@@ -3,21 +3,17 @@ const {MsgRequestData} = require("../../dist/oracle/v1/tx.js");
 const {BroadcastMsg, HD_DERIVATION} = require("./utils.js");
 const {coins} = require("@cosmjs/launchpad");
 const Long = require("long");
-
-const {
-    Obi,
-    ObiSpec,
-    ObiInteger,
-    ObiVector,
-    ObiStruct,
-    ObiString,
-    ObiBytes,
-} = require('@bandprotocol/obi.js')
-
+const {ObiStruct} = require('@bandprotocol/obi.js')
 const config = require('../../config.json')
 
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+        config.mnemonic,
+        {
+            hdPaths: [HD_DERIVATION],
+            prefix: "odin"
+        }
+    );
     let [account] = await wallet.getAccounts();
 
     const msg = {
@@ -54,4 +50,4 @@ async function main() {
     console.log('Request ID:', requestID)
 }
 
-main()
+main();

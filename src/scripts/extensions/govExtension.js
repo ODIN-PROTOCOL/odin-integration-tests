@@ -6,7 +6,7 @@ const cosmjsUtils = require("@cosmjs/stargate/build/queries/utils");
 const queryGov = require("../../../dist/cosmos/gov/v1beta1/query.js")
 
 function setupGovExtension(base) {
-    const rpc = cosmjsUtils.createRpc(base);
+    const rpc = cosmjsUtils.createProtobufRpcClient(base);
     // Use this service to get easy typed access to query methods
     // This cannot be used for proof verification
     const queryService = new queryGov.QueryClientImpl(rpc);

@@ -1,12 +1,12 @@
-let {
-    Secp256k1HdWallet,
+const {
+    Secp256k1Wallet,
     SigningCosmosClient,
     GasPrice,
-    BroadcastMode,
     coins,
 } = require("@cosmjs/launchpad");
-let {Bech32} = require("@cosmjs/encoding");
 const config = require('../../../config.json')
+
+const base64 = 'qW5i7TlV5lvjqqPxLYe2tc8mA57PqUjcUQeklUGOVDA='
 
 async function main() {
     console.log(Buffer.from(base64, 'base64'))
@@ -70,4 +70,4 @@ async function main() {
     console.log('Tx result:', res)
 }
 
-main()
+main();

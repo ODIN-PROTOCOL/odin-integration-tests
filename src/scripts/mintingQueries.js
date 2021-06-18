@@ -11,7 +11,6 @@ const {err} = require("./utils");
 
 // TODO: handle long returns
 async function main() {
-
     const client = QueryClient.withExtensions(
         await Tendermint34Client.connect(config.rpc),
         setupMintExtension,

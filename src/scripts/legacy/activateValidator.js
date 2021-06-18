@@ -1,17 +1,16 @@
-let { Secp256k1Wallet, SigningCosmosClient,GasPrice, coins } = require( "@cosmjs/launchpad");
-let { Bech32 } = require("@cosmjs/encoding");
+const { Secp256k1Wallet, SigningCosmosClient,GasPrice, coins } = require( "@cosmjs/launchpad");
+const { Bech32 } = require("@cosmjs/encoding");
 const config = require('../../../config.json')
 
-let base64 = 'qW5i7TlV5lvjqqPxLYe2tc8mA57PqUjcUQeklUGOVDA='
+const base64 = 'qW5i7TlV5lvjqqPxLYe2tc8mA57PqUjcUQeklUGOVDA='
 
 async function main (){
   console.log(Buffer.from(base64, 'base64'))
 
   const wallet = await Secp256k1Wallet.fromKey(
-    // your mnemonic here 👇
     Buffer.from(base64, 'base64'), "odin"
   );
-  
+
   const [{ address }] = await wallet.getAccounts();
   console.log("Address:", address);
 
@@ -19,7 +18,7 @@ async function main (){
 
   // check our balance
   const account = await client.getAccount();
-  console.log("Account:", account); 
+  console.log("Account:", account);
 
   let msg = {
     type: "oracle/Activate",
@@ -45,4 +44,4 @@ async function main (){
   console.log('Tx result:', res)
 }
 
-main()
+main();

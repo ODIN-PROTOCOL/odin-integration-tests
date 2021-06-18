@@ -6,7 +6,7 @@ const cosmjsUtils = require("@cosmjs/stargate/build/queries/utils");
 const queryCoinswap = require("../../../dist/coinswap/query.js")
 
 function setupCoinswapExtension(base) {
-    const rpc = cosmjsUtils.createRpc(base);
+    const rpc = cosmjsUtils.createProtobufRpcClient(base);
     // Use this service to get easy typed access to query methods
     // This cannot be used for proof verification
     const queryService = new queryCoinswap.QueryClientImpl(rpc);

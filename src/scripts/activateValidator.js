@@ -5,7 +5,13 @@ const {MsgActivate} = require("../../dist/oracle/v1/tx.js");
 const {DirectSecp256k1HdWallet, Registry} = require("@cosmjs/proto-signing");
 
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+        config.mnemonic,
+        {
+            hdPaths: [HD_DERIVATION],
+            prefix: "odin"
+        }
+    );
     const [account] = await wallet.getAccounts();
 
     const typeUrlMsgActivate = "/oracle.v1.MsgActivate";
@@ -25,4 +31,4 @@ async function main() {
     await BroadcastMsg(wallet, registry, msgAny);
 }
 
-main()
+main();

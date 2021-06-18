@@ -29,4 +29,4 @@ async function main() {
     console.log('Messages:', decodedTx.body.messages);
 }
 
-main()
+main();

@@ -5,10 +5,15 @@ const config = require('../../config.json');
 const Long = require("long");
 
 const OptionYes = 1;
-const OptionNo = 3;
 
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+        config.mnemonic,
+        {
+            hdPaths: [HD_DERIVATION],
+            prefix: "odin"
+        }
+    );
     let [account] = await wallet.getAccounts();
 
     let msg = {
@@ -29,4 +34,4 @@ async function main() {
     await BroadcastMsg(wallet, registry, msgAny);
 }
 
-main()
+main();

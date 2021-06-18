@@ -2,9 +2,7 @@ const {setupOracleExtension} = require("./extensions/oracleExtension.js");
 const {
     QueryClient,
 } = require("@cosmjs/stargate");
-const {
-    Tendermint34Client
-} = require("@cosmjs/tendermint-rpc");
+const {Tendermint34Client} = require("@cosmjs/tendermint-rpc");
 const {HD_DERIVATION} = require("./utils.js");
 const {DirectSecp256k1HdWallet} = require("@cosmjs/proto-signing");
 const {Bech32} = require("@cosmjs/encoding");
@@ -14,7 +12,13 @@ const {err} = require("./utils");
 
 // TODO: handle long returns
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+        config.mnemonic,
+        {
+            hdPaths: [HD_DERIVATION],
+            prefix: "odin"
+        }
+    );
     let [account] = await wallet.getAccounts();
 
     const client = QueryClient.withExtensions(
@@ -25,7 +29,6 @@ async function main() {
     console.log("Params: ", (await client.oracle.unverified.params().catch(err)));
     const counts = (await client.oracle.unverified.counts().catch(err));
     console.log("Counts: ", counts);
-    // console.log("Data: ", (await client.oracle.unverified.data("0acc4f276eadba8e1f496d4c6f35adfef3af19f127cb49d124f96bfdfb1cf61d").catch(err)));
     if (counts.dataSourceCount > 0) {
         console.log("Data source: ", (await client.oracle.unverified.dataSource(new Long(1)).catch(err)));
         console.log("Data sources: ", (await client.oracle.unverified.dataSources(new Long(2), new Long(0))));

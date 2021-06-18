@@ -5,7 +5,13 @@ const {coin} = require("@cosmjs/launchpad");
 const config = require('../../config.json');
 
 async function main() {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(config.mnemonic, HD_DERIVATION, "odin");
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+        config.mnemonic,
+        {
+            hdPaths: [HD_DERIVATION],
+            prefix: "odin"
+        }
+    );
     let [account] = await wallet.getAccounts();
 
     // show balances before performing exchange
@@ -33,4 +39,4 @@ async function main() {
     await ShowBalances(account);
 }
 
-main()
+main();
