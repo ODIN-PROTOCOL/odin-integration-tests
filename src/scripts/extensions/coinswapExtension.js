@@ -14,7 +14,7 @@ function setupCoinswapExtension(base) {
         coinswap: {
             unverified: {
                 params: async () => {
-                    const {params} = await queryService.Params({})
+                    const {params} = await queryService.Params({});
                     return params;
                 },
                 rate: async (from, to) => {
