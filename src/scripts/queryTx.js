@@ -7,6 +7,7 @@ const {
 } = require("@cosmjs/tendermint-rpc");
 
 const config = require('../../config.json');
+const {MsgSend} = require("@cosmjs/stargate/build/codec/cosmos/bank/v1beta1/tx");
 
 function err(reason) {
     console.log(reason);
@@ -18,7 +19,7 @@ async function main() {
     // Tx
     // console.log('Tx by hash:', await client.tx({hash: fromHex(txHash)}).catch(err));
 
-    const txs = await client.txSearch({query: `tx.height = 10`}).catch(err);
+    const txs = await client.txSearch({query: `message.action='send' AND tx.height <= 100000`}).catch(err);
     console.log('Tx search:', txs);
 
     console.log('Tx raw:', txs.txs[0]);
@@ -27,6 +28,10 @@ async function main() {
     console.log('Tx parsed:', decodedTx);
 
     console.log('Messages:', decodedTx.body.messages);
+
+    console.log('Raw message', decodedTx.body.messages[0]);
+
+    console.log('Message:', MsgSend.decode(decodedTx.body.messages[0].value));
 }
 
 main();
