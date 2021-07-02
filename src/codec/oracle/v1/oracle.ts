@@ -2,7 +2,7 @@
 import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Timestamp } from "../../google/protobuf/timestamp";
-import { Coin, DecCoin } from "../../cosmos/base/v1beta1/coin";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "oracle.v1";
 
@@ -284,12 +284,21 @@ export interface IBCSource {
 }
 
 export interface OraclePool {
-  dataProvidersPool: DecCoin[];
+  dataProvidersPool: Coin[];
 }
 
 export interface DataProviderAccumulatedReward {
   dataProvider: string;
-  dataProviderReward: DecCoin[];
+  dataProviderReward: Coin[];
+}
+
+export interface DataProvidersAccumulatedRewards {
+  currentRewardPerByte: Coin[];
+  accumulatedAmount: Coin[];
+}
+
+export interface AccumulatedPaymentsForData {
+  accumulatedAmount: Coin[];
 }
 
 const baseDataSource: object = {
@@ -2284,7 +2293,7 @@ export const OraclePool = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.dataProvidersPool) {
-      DecCoin.encode(v!, writer.uint32(10).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -2298,9 +2307,7 @@ export const OraclePool = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.dataProvidersPool.push(
-            DecCoin.decode(reader, reader.uint32())
-          );
+          message.dataProvidersPool.push(Coin.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -2318,7 +2325,7 @@ export const OraclePool = {
       object.dataProvidersPool !== null
     ) {
       for (const e of object.dataProvidersPool) {
-        message.dataProvidersPool.push(DecCoin.fromJSON(e));
+        message.dataProvidersPool.push(Coin.fromJSON(e));
       }
     }
     return message;
@@ -2328,7 +2335,7 @@ export const OraclePool = {
     const obj: any = {};
     if (message.dataProvidersPool) {
       obj.dataProvidersPool = message.dataProvidersPool.map((e) =>
-        e ? DecCoin.toJSON(e) : undefined
+        e ? Coin.toJSON(e) : undefined
       );
     } else {
       obj.dataProvidersPool = [];
@@ -2344,7 +2351,7 @@ export const OraclePool = {
       object.dataProvidersPool !== null
     ) {
       for (const e of object.dataProvidersPool) {
-        message.dataProvidersPool.push(DecCoin.fromPartial(e));
+        message.dataProvidersPool.push(Coin.fromPartial(e));
       }
     }
     return message;
@@ -2362,7 +2369,7 @@ export const DataProviderAccumulatedReward = {
       writer.uint32(10).string(message.dataProvider);
     }
     for (const v of message.dataProviderReward) {
-      DecCoin.encode(v!, writer.uint32(18).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -2384,9 +2391,7 @@ export const DataProviderAccumulatedReward = {
           message.dataProvider = reader.string();
           break;
         case 2:
-          message.dataProviderReward.push(
-            DecCoin.decode(reader, reader.uint32())
-          );
+          message.dataProviderReward.push(Coin.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -2411,7 +2416,7 @@ export const DataProviderAccumulatedReward = {
       object.dataProviderReward !== null
     ) {
       for (const e of object.dataProviderReward) {
-        message.dataProviderReward.push(DecCoin.fromJSON(e));
+        message.dataProviderReward.push(Coin.fromJSON(e));
       }
     }
     return message;
@@ -2423,7 +2428,7 @@ export const DataProviderAccumulatedReward = {
       (obj.dataProvider = message.dataProvider);
     if (message.dataProviderReward) {
       obj.dataProviderReward = message.dataProviderReward.map((e) =>
-        e ? DecCoin.toJSON(e) : undefined
+        e ? Coin.toJSON(e) : undefined
       );
     } else {
       obj.dataProviderReward = [];
@@ -2448,7 +2453,209 @@ export const DataProviderAccumulatedReward = {
       object.dataProviderReward !== null
     ) {
       for (const e of object.dataProviderReward) {
-        message.dataProviderReward.push(DecCoin.fromPartial(e));
+        message.dataProviderReward.push(Coin.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseDataProvidersAccumulatedRewards: object = {};
+
+export const DataProvidersAccumulatedRewards = {
+  encode(
+    message: DataProvidersAccumulatedRewards,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.currentRewardPerByte) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.accumulatedAmount) {
+      Coin.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): DataProvidersAccumulatedRewards {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseDataProvidersAccumulatedRewards,
+    } as DataProvidersAccumulatedRewards;
+    message.currentRewardPerByte = [];
+    message.accumulatedAmount = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.currentRewardPerByte.push(
+            Coin.decode(reader, reader.uint32())
+          );
+          break;
+        case 2:
+          message.accumulatedAmount.push(Coin.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DataProvidersAccumulatedRewards {
+    const message = {
+      ...baseDataProvidersAccumulatedRewards,
+    } as DataProvidersAccumulatedRewards;
+    message.currentRewardPerByte = [];
+    message.accumulatedAmount = [];
+    if (
+      object.currentRewardPerByte !== undefined &&
+      object.currentRewardPerByte !== null
+    ) {
+      for (const e of object.currentRewardPerByte) {
+        message.currentRewardPerByte.push(Coin.fromJSON(e));
+      }
+    }
+    if (
+      object.accumulatedAmount !== undefined &&
+      object.accumulatedAmount !== null
+    ) {
+      for (const e of object.accumulatedAmount) {
+        message.accumulatedAmount.push(Coin.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: DataProvidersAccumulatedRewards): unknown {
+    const obj: any = {};
+    if (message.currentRewardPerByte) {
+      obj.currentRewardPerByte = message.currentRewardPerByte.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
+    } else {
+      obj.currentRewardPerByte = [];
+    }
+    if (message.accumulatedAmount) {
+      obj.accumulatedAmount = message.accumulatedAmount.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
+    } else {
+      obj.accumulatedAmount = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<DataProvidersAccumulatedRewards>
+  ): DataProvidersAccumulatedRewards {
+    const message = {
+      ...baseDataProvidersAccumulatedRewards,
+    } as DataProvidersAccumulatedRewards;
+    message.currentRewardPerByte = [];
+    message.accumulatedAmount = [];
+    if (
+      object.currentRewardPerByte !== undefined &&
+      object.currentRewardPerByte !== null
+    ) {
+      for (const e of object.currentRewardPerByte) {
+        message.currentRewardPerByte.push(Coin.fromPartial(e));
+      }
+    }
+    if (
+      object.accumulatedAmount !== undefined &&
+      object.accumulatedAmount !== null
+    ) {
+      for (const e of object.accumulatedAmount) {
+        message.accumulatedAmount.push(Coin.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseAccumulatedPaymentsForData: object = {};
+
+export const AccumulatedPaymentsForData = {
+  encode(
+    message: AccumulatedPaymentsForData,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.accumulatedAmount) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): AccumulatedPaymentsForData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseAccumulatedPaymentsForData,
+    } as AccumulatedPaymentsForData;
+    message.accumulatedAmount = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.accumulatedAmount.push(Coin.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AccumulatedPaymentsForData {
+    const message = {
+      ...baseAccumulatedPaymentsForData,
+    } as AccumulatedPaymentsForData;
+    message.accumulatedAmount = [];
+    if (
+      object.accumulatedAmount !== undefined &&
+      object.accumulatedAmount !== null
+    ) {
+      for (const e of object.accumulatedAmount) {
+        message.accumulatedAmount.push(Coin.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: AccumulatedPaymentsForData): unknown {
+    const obj: any = {};
+    if (message.accumulatedAmount) {
+      obj.accumulatedAmount = message.accumulatedAmount.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
+    } else {
+      obj.accumulatedAmount = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<AccumulatedPaymentsForData>
+  ): AccumulatedPaymentsForData {
+    const message = {
+      ...baseAccumulatedPaymentsForData,
+    } as AccumulatedPaymentsForData;
+    message.accumulatedAmount = [];
+    if (
+      object.accumulatedAmount !== undefined &&
+      object.accumulatedAmount !== null
+    ) {
+      for (const e of object.accumulatedAmount) {
+        message.accumulatedAmount.push(Coin.fromPartial(e));
       }
     }
     return message;

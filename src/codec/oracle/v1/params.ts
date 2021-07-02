@@ -1,7 +1,7 @@
 /* eslint-disable */
 import Long from "long";
 import _m0 from "protobufjs/minimal";
-import { DecCoin } from "../../cosmos/base/v1beta1/coin";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "oracle.v1";
 
@@ -54,13 +54,22 @@ export interface Params {
    * calldata
    */
   maxCalldataSize: Long;
-  /**
-   * DataProviderRewardPerByte is the amount of tokens, user gets for the byte
-   * of data provided
-   */
-  dataProviderRewardPerByte: DecCoin[];
+  /** DataProviderRewardPerByte is the amount of tokens, user gets for the byte of data provided */
+  dataProviderRewardPerByte: Coin[];
+  /** DataProviderRewardThreshold is the maximum amount of tokens that can be paid for data per time */
+  dataProviderRewardThreshold?: RewardThreshold;
+  /** RewardDecreasingFraction is the percentage by which the cost of data per byte is reduced when the limit is reached */
+  rewardDecreasingFraction: Uint8Array;
   /** Denominations that can be used for withdrawing fee from data requesters */
   dataRequesterFeeDenoms: string[];
+}
+
+/** RewardThreshold */
+export interface RewardThreshold {
+  /** Amount is the maximum amount of tokens that can be paid for data */
+  amount: Coin[];
+  /** Blocks is the number of blocks during which the sum of the reward should not exceed total_reward_amount */
+  blocks: Long;
 }
 
 const baseParams: object = {
@@ -113,10 +122,19 @@ export const Params = {
       writer.uint32(80).uint64(message.maxCalldataSize);
     }
     for (const v of message.dataProviderRewardPerByte) {
-      DecCoin.encode(v!, writer.uint32(90).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(90).fork()).ldelim();
+    }
+    if (message.dataProviderRewardThreshold !== undefined) {
+      RewardThreshold.encode(
+        message.dataProviderRewardThreshold,
+        writer.uint32(98).fork()
+      ).ldelim();
+    }
+    if (message.rewardDecreasingFraction.length !== 0) {
+      writer.uint32(106).bytes(message.rewardDecreasingFraction);
     }
     for (const v of message.dataRequesterFeeDenoms) {
-      writer.uint32(98).string(v!);
+      writer.uint32(114).string(v!);
     }
     return writer;
   },
@@ -127,6 +145,7 @@ export const Params = {
     const message = { ...baseParams } as Params;
     message.dataProviderRewardPerByte = [];
     message.dataRequesterFeeDenoms = [];
+    message.rewardDecreasingFraction = new Uint8Array();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -162,10 +181,19 @@ export const Params = {
           break;
         case 11:
           message.dataProviderRewardPerByte.push(
-            DecCoin.decode(reader, reader.uint32())
+            Coin.decode(reader, reader.uint32())
           );
           break;
         case 12:
+          message.dataProviderRewardThreshold = RewardThreshold.decode(
+            reader,
+            reader.uint32()
+          );
+          break;
+        case 13:
+          message.rewardDecreasingFraction = reader.bytes();
+          break;
+        case 14:
           message.dataRequesterFeeDenoms.push(reader.string());
           break;
         default:
@@ -180,6 +208,7 @@ export const Params = {
     const message = { ...baseParams } as Params;
     message.dataProviderRewardPerByte = [];
     message.dataRequesterFeeDenoms = [];
+    message.rewardDecreasingFraction = new Uint8Array();
     if (
       object.maxRawRequestCount !== undefined &&
       object.maxRawRequestCount !== null
@@ -264,8 +293,26 @@ export const Params = {
       object.dataProviderRewardPerByte !== null
     ) {
       for (const e of object.dataProviderRewardPerByte) {
-        message.dataProviderRewardPerByte.push(DecCoin.fromJSON(e));
+        message.dataProviderRewardPerByte.push(Coin.fromJSON(e));
       }
+    }
+    if (
+      object.dataProviderRewardThreshold !== undefined &&
+      object.dataProviderRewardThreshold !== null
+    ) {
+      message.dataProviderRewardThreshold = RewardThreshold.fromJSON(
+        object.dataProviderRewardThreshold
+      );
+    } else {
+      message.dataProviderRewardThreshold = undefined;
+    }
+    if (
+      object.rewardDecreasingFraction !== undefined &&
+      object.rewardDecreasingFraction !== null
+    ) {
+      message.rewardDecreasingFraction = bytesFromBase64(
+        object.rewardDecreasingFraction
+      );
     }
     if (
       object.dataRequesterFeeDenoms !== undefined &&
@@ -316,11 +363,21 @@ export const Params = {
       ).toString());
     if (message.dataProviderRewardPerByte) {
       obj.dataProviderRewardPerByte = message.dataProviderRewardPerByte.map(
-        (e) => (e ? DecCoin.toJSON(e) : undefined)
+        (e) => (e ? Coin.toJSON(e) : undefined)
       );
     } else {
       obj.dataProviderRewardPerByte = [];
     }
+    message.dataProviderRewardThreshold !== undefined &&
+      (obj.dataProviderRewardThreshold = message.dataProviderRewardThreshold
+        ? RewardThreshold.toJSON(message.dataProviderRewardThreshold)
+        : undefined);
+    message.rewardDecreasingFraction !== undefined &&
+      (obj.rewardDecreasingFraction = base64FromBytes(
+        message.rewardDecreasingFraction !== undefined
+          ? message.rewardDecreasingFraction
+          : new Uint8Array()
+      ));
     if (message.dataRequesterFeeDenoms) {
       obj.dataRequesterFeeDenoms = message.dataRequesterFeeDenoms.map((e) => e);
     } else {
@@ -409,8 +466,26 @@ export const Params = {
       object.dataProviderRewardPerByte !== null
     ) {
       for (const e of object.dataProviderRewardPerByte) {
-        message.dataProviderRewardPerByte.push(DecCoin.fromPartial(e));
+        message.dataProviderRewardPerByte.push(Coin.fromPartial(e));
       }
+    }
+    if (
+      object.dataProviderRewardThreshold !== undefined &&
+      object.dataProviderRewardThreshold !== null
+    ) {
+      message.dataProviderRewardThreshold = RewardThreshold.fromPartial(
+        object.dataProviderRewardThreshold
+      );
+    } else {
+      message.dataProviderRewardThreshold = undefined;
+    }
+    if (
+      object.rewardDecreasingFraction !== undefined &&
+      object.rewardDecreasingFraction !== null
+    ) {
+      message.rewardDecreasingFraction = object.rewardDecreasingFraction;
+    } else {
+      message.rewardDecreasingFraction = new Uint8Array();
     }
     if (
       object.dataRequesterFeeDenoms !== undefined &&
@@ -423,6 +498,122 @@ export const Params = {
     return message;
   },
 };
+
+const baseRewardThreshold: object = { blocks: Long.UZERO };
+
+export const RewardThreshold = {
+  encode(
+    message: RewardThreshold,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.amount) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (!message.blocks.isZero()) {
+      writer.uint32(16).uint64(message.blocks);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RewardThreshold {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseRewardThreshold } as RewardThreshold;
+    message.amount = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.amount.push(Coin.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.blocks = reader.uint64() as Long;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RewardThreshold {
+    const message = { ...baseRewardThreshold } as RewardThreshold;
+    message.amount = [];
+    if (object.amount !== undefined && object.amount !== null) {
+      for (const e of object.amount) {
+        message.amount.push(Coin.fromJSON(e));
+      }
+    }
+    if (object.blocks !== undefined && object.blocks !== null) {
+      message.blocks = Long.fromString(object.blocks);
+    } else {
+      message.blocks = Long.UZERO;
+    }
+    return message;
+  },
+
+  toJSON(message: RewardThreshold): unknown {
+    const obj: any = {};
+    if (message.amount) {
+      obj.amount = message.amount.map((e) => (e ? Coin.toJSON(e) : undefined));
+    } else {
+      obj.amount = [];
+    }
+    message.blocks !== undefined &&
+      (obj.blocks = (message.blocks || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<RewardThreshold>): RewardThreshold {
+    const message = { ...baseRewardThreshold } as RewardThreshold;
+    message.amount = [];
+    if (object.amount !== undefined && object.amount !== null) {
+      for (const e of object.amount) {
+        message.amount.push(Coin.fromPartial(e));
+      }
+    }
+    if (object.blocks !== undefined && object.blocks !== null) {
+      message.blocks = object.blocks as Long;
+    } else {
+      message.blocks = Long.UZERO;
+    }
+    return message;
+  },
+};
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") return globalThis;
+  if (typeof self !== "undefined") return self;
+  if (typeof window !== "undefined") return window;
+  if (typeof global !== "undefined") return global;
+  throw "Unable to locate global object";
+})();
+
+const atob: (b64: string) => string =
+  globalThis.atob ||
+  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
+function bytesFromBase64(b64: string): Uint8Array {
+  const bin = atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; ++i) {
+    arr[i] = bin.charCodeAt(i);
+  }
+  return arr;
+}
+
+const btoa: (bin: string) => string =
+  globalThis.btoa ||
+  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
+function base64FromBytes(arr: Uint8Array): string {
+  const bin: string[] = [];
+  for (let i = 0; i < arr.byteLength; ++i) {
+    bin.push(String.fromCharCode(arr[i]));
+  }
+  return btoa(bin.join(""));
+}
 
 type Builtin =
   | Date

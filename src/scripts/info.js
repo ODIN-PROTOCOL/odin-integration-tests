@@ -12,6 +12,10 @@ const {
 } = require("@cosmjs/tendermint-rpc");
 
 const config = require('../../config.json');
+const {ShowBalances} = require("./utils");
+
+const {HD_DERIVATION} = require("./utils");
+const {DirectSecp256k1HdWallet} = require("@cosmjs/proto-signing");
 
 function err(reason) {
     console.log(reason);
@@ -53,6 +57,19 @@ async function main() {
     // console.log('Coinswap params', (await getParams()).data);
     // console.log('Mint params: ', await client.mint.parameters());
     // console.log('Oracle params: ', (await getOracleParams()).data);
+
+    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+        config.mnemonic,
+        {
+            hdPaths: [HD_DERIVATION],
+            prefix: "odin"
+        }
+    );
+
+    const [account] = await wallet.getAccounts();
+    console.log(account);
+
+    await ShowBalances(account);
 }
 
 main()

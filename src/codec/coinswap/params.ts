@@ -11,7 +11,7 @@ export interface Exchange {
 }
 
 export interface Params {
-  exchanges: Exchange[];
+  exchangeRates: Exchange[];
 }
 
 const baseExchange: object = { from: "", to: "", rateMultiplier: "" };
@@ -114,7 +114,7 @@ export const Params = {
     message: Params,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    for (const v of message.exchanges) {
+    for (const v of message.exchangeRates) {
       Exchange.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
@@ -124,12 +124,12 @@ export const Params = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseParams } as Params;
-    message.exchanges = [];
+    message.exchangeRates = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.exchanges.push(Exchange.decode(reader, reader.uint32()));
+          message.exchangeRates.push(Exchange.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -141,10 +141,10 @@ export const Params = {
 
   fromJSON(object: any): Params {
     const message = { ...baseParams } as Params;
-    message.exchanges = [];
-    if (object.exchanges !== undefined && object.exchanges !== null) {
-      for (const e of object.exchanges) {
-        message.exchanges.push(Exchange.fromJSON(e));
+    message.exchangeRates = [];
+    if (object.exchangeRates !== undefined && object.exchangeRates !== null) {
+      for (const e of object.exchangeRates) {
+        message.exchangeRates.push(Exchange.fromJSON(e));
       }
     }
     return message;
@@ -152,22 +152,22 @@ export const Params = {
 
   toJSON(message: Params): unknown {
     const obj: any = {};
-    if (message.exchanges) {
-      obj.exchanges = message.exchanges.map((e) =>
+    if (message.exchangeRates) {
+      obj.exchangeRates = message.exchangeRates.map((e) =>
         e ? Exchange.toJSON(e) : undefined
       );
     } else {
-      obj.exchanges = [];
+      obj.exchangeRates = [];
     }
     return obj;
   },
 
   fromPartial(object: DeepPartial<Params>): Params {
     const message = { ...baseParams } as Params;
-    message.exchanges = [];
-    if (object.exchanges !== undefined && object.exchanges !== null) {
-      for (const e of object.exchanges) {
-        message.exchanges.push(Exchange.fromPartial(e));
+    message.exchangeRates = [];
+    if (object.exchangeRates !== undefined && object.exchangeRates !== null) {
+      for (const e of object.exchangeRates) {
+        message.exchangeRates.push(Exchange.fromPartial(e));
       }
     }
     return message;

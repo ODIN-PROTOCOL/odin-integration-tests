@@ -3,22 +3,22 @@ import Long from "long";
 import _m0 from "protobufjs/minimal";
 import { Coin } from "../cosmos/base/v1beta1/coin";
 
-export const protobufPackage = "coinswap";
+export const protobufPackage = "auction";
 
-export interface MsgExchange {
+export interface MsgBuyCoins {
   from: string;
   to: string;
   amount?: Coin;
   requester: string;
 }
 
-export interface MsgExchangeResponse {}
+export interface MsgBuyCoinsResponse {}
 
-const baseMsgExchange: object = { from: "", to: "", requester: "" };
+const baseMsgBuyCoins: object = { from: "", to: "", requester: "" };
 
-export const MsgExchange = {
+export const MsgBuyCoins = {
   encode(
-    message: MsgExchange,
+    message: MsgBuyCoins,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.from !== "") {
@@ -36,10 +36,10 @@ export const MsgExchange = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgExchange {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgBuyCoins {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgExchange } as MsgExchange;
+    const message = { ...baseMsgBuyCoins } as MsgBuyCoins;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -63,8 +63,8 @@ export const MsgExchange = {
     return message;
   },
 
-  fromJSON(object: any): MsgExchange {
-    const message = { ...baseMsgExchange } as MsgExchange;
+  fromJSON(object: any): MsgBuyCoins {
+    const message = { ...baseMsgBuyCoins } as MsgBuyCoins;
     if (object.from !== undefined && object.from !== null) {
       message.from = String(object.from);
     } else {
@@ -88,7 +88,7 @@ export const MsgExchange = {
     return message;
   },
 
-  toJSON(message: MsgExchange): unknown {
+  toJSON(message: MsgBuyCoins): unknown {
     const obj: any = {};
     message.from !== undefined && (obj.from = message.from);
     message.to !== undefined && (obj.to = message.to);
@@ -98,8 +98,8 @@ export const MsgExchange = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<MsgExchange>): MsgExchange {
-    const message = { ...baseMsgExchange } as MsgExchange;
+  fromPartial(object: DeepPartial<MsgBuyCoins>): MsgBuyCoins {
+    const message = { ...baseMsgBuyCoins } as MsgBuyCoins;
     if (object.from !== undefined && object.from !== null) {
       message.from = object.from;
     } else {
@@ -124,20 +124,20 @@ export const MsgExchange = {
   },
 };
 
-const baseMsgExchangeResponse: object = {};
+const baseMsgBuyCoinsResponse: object = {};
 
-export const MsgExchangeResponse = {
+export const MsgBuyCoinsResponse = {
   encode(
-    _: MsgExchangeResponse,
+    _: MsgBuyCoinsResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgExchangeResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgBuyCoinsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseMsgExchangeResponse } as MsgExchangeResponse;
+    const message = { ...baseMsgBuyCoinsResponse } as MsgBuyCoinsResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -149,25 +149,25 @@ export const MsgExchangeResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgExchangeResponse {
-    const message = { ...baseMsgExchangeResponse } as MsgExchangeResponse;
+  fromJSON(_: any): MsgBuyCoinsResponse {
+    const message = { ...baseMsgBuyCoinsResponse } as MsgBuyCoinsResponse;
     return message;
   },
 
-  toJSON(_: MsgExchangeResponse): unknown {
+  toJSON(_: MsgBuyCoinsResponse): unknown {
     const obj: any = {};
     return obj;
   },
 
-  fromPartial(_: DeepPartial<MsgExchangeResponse>): MsgExchangeResponse {
-    const message = { ...baseMsgExchangeResponse } as MsgExchangeResponse;
+  fromPartial(_: DeepPartial<MsgBuyCoinsResponse>): MsgBuyCoinsResponse {
+    const message = { ...baseMsgBuyCoinsResponse } as MsgBuyCoinsResponse;
     return message;
   },
 };
 
-/** Msg defines the coinswap Msg service. */
+/** Msg defines the auction Msg service. */
 export interface Msg {
-  Exchange(request: MsgExchange): Promise<MsgExchangeResponse>;
+  BuyCoins(request: MsgBuyCoins): Promise<MsgBuyCoinsResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -175,11 +175,11 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
   }
-  Exchange(request: MsgExchange): Promise<MsgExchangeResponse> {
-    const data = MsgExchange.encode(request).finish();
-    const promise = this.rpc.request("coinswap.Msg", "Exchange", data);
+  BuyCoins(request: MsgBuyCoins): Promise<MsgBuyCoinsResponse> {
+    const data = MsgBuyCoins.encode(request).finish();
+    const promise = this.rpc.request("auction.Msg", "BuyCoins", data);
     return promise.then((data) =>
-      MsgExchangeResponse.decode(new _m0.Reader(data))
+      MsgBuyCoinsResponse.decode(new _m0.Reader(data))
     );
   }
 }

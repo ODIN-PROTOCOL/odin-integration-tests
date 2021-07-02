@@ -15,7 +15,7 @@ import {
   PageResponse,
 } from "../../cosmos/base/query/v1beta1/pagination";
 import { Params } from "../../oracle/v1/params";
-import { DecCoin } from "../../cosmos/base/v1beta1/coin";
+import { Coin } from "../../cosmos/base/v1beta1/coin";
 
 export const protobufPackage = "oracle.v1";
 
@@ -54,61 +54,40 @@ export interface QueryDataSourcesRequest {
   pagination?: PageRequest;
 }
 
-/**
- * QueryDataSourcesResponse is response type for the Query/DataSources RPC
- * method.
- */
+/** QueryDataSourcesResponse is response type for the Query/DataSources RPC method. */
 export interface QueryDataSourcesResponse {
   dataSources: DataSource[];
   pagination?: PageResponse;
 }
 
-/**
- * QueryOracleScriptRequest is request type for the Query/OracleScript RPC
- * method.
- */
+/** QueryOracleScriptRequest is request type for the Query/OracleScript RPC method. */
 export interface QueryOracleScriptRequest {
   oracleScriptId: Long;
 }
 
-/**
- * QueryOracleScriptResponse is response type for the Query/OracleScript RPC
- * method.
- */
+/** QueryOracleScriptResponse is response type for the Query/OracleScript RPC method. */
 export interface QueryOracleScriptResponse {
   oracleScript?: OracleScript;
 }
 
-/**
- * QueryOracleScriptsRequest is request type for the Query/OracleScripts RPC
- * method.
- */
+/** QueryOracleScriptsRequest is request type for the Query/OracleScripts RPC method. */
 export interface QueryOracleScriptsRequest {
   pagination?: PageRequest;
 }
 
-/**
- * QueryOracleScriptsResponse is response type for the Query/OracleScripts RPC
- * method.
- */
+/** QueryOracleScriptsResponse is response type for the Query/OracleScripts RPC method. */
 export interface QueryOracleScriptsResponse {
   oracleScripts: OracleScript[];
   pagination?: PageResponse;
 }
 
-/**
- * QueryRequestReportsRequest is request type for the Query/RequestReports RPC
- * method.
- */
+/** QueryRequestReportsRequest is request type for the Query/RequestReports RPC method. */
 export interface QueryRequestReportsRequest {
   requestId: Long;
   pagination?: PageRequest;
 }
 
-/**
- * QueryRequestReportsResponse is response type for the Query/RequestReports RPC
- * method.
- */
+/** QueryRequestReportsResponse is response type for the Query/RequestReports RPC method. */
 export interface QueryRequestReportsResponse {
   reports: Report[];
   pagination?: PageResponse;
@@ -164,24 +143,15 @@ export interface QueryReportersResponse {
   reporter: string[];
 }
 
-/**
- * QueryActiveValidatorsRequest is request type for the Query/ActiveValidators
- * RPC method.
- */
+/** QueryActiveValidatorsRequest is request type for the Query/ActiveValidators RPC method. */
 export interface QueryActiveValidatorsRequest {}
 
-/**
- * QueryActiveValidatorsResponse is response type for the Query/ActiveValidators
- * RPC method.
- */
+/** QueryActiveValidatorsResponse is response type for the Query/ActiveValidators RPC method. */
 export interface QueryActiveValidatorsResponse {
   count: Long;
 }
 
-/**
- * QueryRequestSearchRequest is request type for the Query/RequestSearch RPC
- * method.
- */
+/** QueryRequestSearchRequest is request type for the Query/RequestSearch RPC method. */
 export interface QueryRequestSearchRequest {
   oracleScriptId: Long;
   calldata: Uint8Array;
@@ -189,29 +159,20 @@ export interface QueryRequestSearchRequest {
   minCount: Long;
 }
 
-/**
- * QueryRequestSearchResponse is response type for the Query/RequestSearch RPC
- * method.
- */
+/** QueryRequestSearchResponse is response type for the Query/RequestSearch RPC method. */
 export interface QueryRequestSearchResponse {
   requestPacketData?: OracleRequestPacketData;
   responsePacketData?: OracleResponsePacketData;
 }
 
-/**
- * QueryRequestPriceRequest is request type for the Query/RequestPrice RPC
- * method.
- */
+/** QueryRequestPriceRequest is request type for the Query/RequestPrice RPC method. */
 export interface QueryRequestPriceRequest {
   symbol: string;
   askCount: Long;
   minCount: Long;
 }
 
-/**
- * QueryRequestPriceResponse is response type for the Query/RequestPrice RPC
- * method.
- */
+/** QueryRequestPriceResponse is response type for the Query/RequestPrice RPC method. */
 export interface QueryRequestPriceResponse {
   oracleScriptId: Long;
   calldata: Uint8Array;
@@ -221,15 +182,32 @@ export interface QueryRequestPriceResponse {
 
 export interface QueryDataProvidersPoolRequest {}
 
-/**
- * QueryRequestPriceResponse is response type for the Query/RequestPrice RPC
- * method.
- */
+/** QueryRequestPriceResponse is response type for the Query/RequestPrice RPC method. */
 export interface QueryDataProvidersPoolResponse {
-  pool: DecCoin[];
+  pool: Coin[];
 }
 
 export interface QueryRequestIDs {
+  requestIds: Long[];
+}
+
+/** QueryDataProviderRewardRequest is request type for the Query/DataProviderReward RPC method. */
+export interface QueryDataProviderRewardRequest {}
+
+/** QueryDataProviderRewardResponse is response type for the Query/DataProviderReward RPC method. */
+export interface QueryDataProviderRewardResponse {
+  rewardPerByte: Coin[];
+}
+
+/** QueryPendingRequestRequest is request type for the Query/PendingRequests RPC method. */
+export interface QueryPendingRequestsRequest {
+  /** ValidatorAddress is address of a validator */
+  validatorAddress: string;
+}
+
+/** QueryPendingRequestResponse is response type for the Query/PendingRequests RPC method. */
+export interface QueryPendingRequestsResponse {
+  /** RequestIDs is a list of pending request IDs assigned to the given validator */
   requestIds: Long[];
 }
 
@@ -2659,7 +2637,7 @@ export const QueryDataProvidersPoolResponse = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.pool) {
-      DecCoin.encode(v!, writer.uint32(10).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -2678,7 +2656,7 @@ export const QueryDataProvidersPoolResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.pool.push(DecCoin.decode(reader, reader.uint32()));
+          message.pool.push(Coin.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -2695,7 +2673,7 @@ export const QueryDataProvidersPoolResponse = {
     message.pool = [];
     if (object.pool !== undefined && object.pool !== null) {
       for (const e of object.pool) {
-        message.pool.push(DecCoin.fromJSON(e));
+        message.pool.push(Coin.fromJSON(e));
       }
     }
     return message;
@@ -2704,7 +2682,7 @@ export const QueryDataProvidersPoolResponse = {
   toJSON(message: QueryDataProvidersPoolResponse): unknown {
     const obj: any = {};
     if (message.pool) {
-      obj.pool = message.pool.map((e) => (e ? DecCoin.toJSON(e) : undefined));
+      obj.pool = message.pool.map((e) => (e ? Coin.toJSON(e) : undefined));
     } else {
       obj.pool = [];
     }
@@ -2720,7 +2698,7 @@ export const QueryDataProvidersPoolResponse = {
     message.pool = [];
     if (object.pool !== undefined && object.pool !== null) {
       for (const e of object.pool) {
-        message.pool.push(DecCoin.fromPartial(e));
+        message.pool.push(Coin.fromPartial(e));
       }
     }
     return message;
@@ -2803,6 +2781,299 @@ export const QueryRequestIDs = {
   },
 };
 
+const baseQueryDataProviderRewardRequest: object = {};
+
+export const QueryDataProviderRewardRequest = {
+  encode(
+    _: QueryDataProviderRewardRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryDataProviderRewardRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryDataProviderRewardRequest,
+    } as QueryDataProviderRewardRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryDataProviderRewardRequest {
+    const message = {
+      ...baseQueryDataProviderRewardRequest,
+    } as QueryDataProviderRewardRequest;
+    return message;
+  },
+
+  toJSON(_: QueryDataProviderRewardRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<QueryDataProviderRewardRequest>
+  ): QueryDataProviderRewardRequest {
+    const message = {
+      ...baseQueryDataProviderRewardRequest,
+    } as QueryDataProviderRewardRequest;
+    return message;
+  },
+};
+
+const baseQueryDataProviderRewardResponse: object = {};
+
+export const QueryDataProviderRewardResponse = {
+  encode(
+    message: QueryDataProviderRewardResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.rewardPerByte) {
+      Coin.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryDataProviderRewardResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryDataProviderRewardResponse,
+    } as QueryDataProviderRewardResponse;
+    message.rewardPerByte = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.rewardPerByte.push(Coin.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryDataProviderRewardResponse {
+    const message = {
+      ...baseQueryDataProviderRewardResponse,
+    } as QueryDataProviderRewardResponse;
+    message.rewardPerByte = [];
+    if (object.rewardPerByte !== undefined && object.rewardPerByte !== null) {
+      for (const e of object.rewardPerByte) {
+        message.rewardPerByte.push(Coin.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: QueryDataProviderRewardResponse): unknown {
+    const obj: any = {};
+    if (message.rewardPerByte) {
+      obj.rewardPerByte = message.rewardPerByte.map((e) =>
+        e ? Coin.toJSON(e) : undefined
+      );
+    } else {
+      obj.rewardPerByte = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryDataProviderRewardResponse>
+  ): QueryDataProviderRewardResponse {
+    const message = {
+      ...baseQueryDataProviderRewardResponse,
+    } as QueryDataProviderRewardResponse;
+    message.rewardPerByte = [];
+    if (object.rewardPerByte !== undefined && object.rewardPerByte !== null) {
+      for (const e of object.rewardPerByte) {
+        message.rewardPerByte.push(Coin.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseQueryPendingRequestsRequest: object = { validatorAddress: "" };
+
+export const QueryPendingRequestsRequest = {
+  encode(
+    message: QueryPendingRequestsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryPendingRequestsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryPendingRequestsRequest,
+    } as QueryPendingRequestsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validatorAddress = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryPendingRequestsRequest {
+    const message = {
+      ...baseQueryPendingRequestsRequest,
+    } as QueryPendingRequestsRequest;
+    if (
+      object.validatorAddress !== undefined &&
+      object.validatorAddress !== null
+    ) {
+      message.validatorAddress = String(object.validatorAddress);
+    } else {
+      message.validatorAddress = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryPendingRequestsRequest): unknown {
+    const obj: any = {};
+    message.validatorAddress !== undefined &&
+      (obj.validatorAddress = message.validatorAddress);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryPendingRequestsRequest>
+  ): QueryPendingRequestsRequest {
+    const message = {
+      ...baseQueryPendingRequestsRequest,
+    } as QueryPendingRequestsRequest;
+    if (
+      object.validatorAddress !== undefined &&
+      object.validatorAddress !== null
+    ) {
+      message.validatorAddress = object.validatorAddress;
+    } else {
+      message.validatorAddress = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryPendingRequestsResponse: object = { requestIds: Long.ZERO };
+
+export const QueryPendingRequestsResponse = {
+  encode(
+    message: QueryPendingRequestsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    writer.uint32(10).fork();
+    for (const v of message.requestIds) {
+      writer.int64(v);
+    }
+    writer.ldelim();
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryPendingRequestsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryPendingRequestsResponse,
+    } as QueryPendingRequestsResponse;
+    message.requestIds = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.requestIds.push(reader.int64() as Long);
+            }
+          } else {
+            message.requestIds.push(reader.int64() as Long);
+          }
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryPendingRequestsResponse {
+    const message = {
+      ...baseQueryPendingRequestsResponse,
+    } as QueryPendingRequestsResponse;
+    message.requestIds = [];
+    if (object.requestIds !== undefined && object.requestIds !== null) {
+      for (const e of object.requestIds) {
+        message.requestIds.push(Long.fromString(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: QueryPendingRequestsResponse): unknown {
+    const obj: any = {};
+    if (message.requestIds) {
+      obj.requestIds = message.requestIds.map((e) =>
+        (e || Long.ZERO).toString()
+      );
+    } else {
+      obj.requestIds = [];
+    }
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryPendingRequestsResponse>
+  ): QueryPendingRequestsResponse {
+    const message = {
+      ...baseQueryPendingRequestsResponse,
+    } as QueryPendingRequestsResponse;
+    message.requestIds = [];
+    if (object.requestIds !== undefined && object.requestIds !== null) {
+      for (const e of object.requestIds) {
+        message.requestIds.push(e);
+      }
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Counts queries the number of data sources, oracle scripts, and requests. */
@@ -2827,10 +3098,7 @@ export interface Query {
   Request(request: QueryRequestRequest): Promise<QueryRequestResponse>;
   /** Requests queries all requests with pagination. */
   Requests(request: QueryRequestsRequest): Promise<QueryRequestsResponse>;
-  /**
-   * Validator queries oracle info of validator for given validator
-   * address.
-   */
+  /** Validator queries oracle info of validator for given validator address. */
   Validator(request: QueryValidatorRequest): Promise<QueryValidatorResponse>;
   /** Reporters queries all reporters of a given validator address. */
   Reporters(request: QueryReportersRequest): Promise<QueryReportersResponse>;
@@ -2844,10 +3112,7 @@ export interface Query {
   RequestSearch(
     request: QueryRequestSearchRequest
   ): Promise<QueryRequestSearchResponse>;
-  /**
-   * RequestPrice queries the latest price on standard price reference oracle
-   * script.
-   */
+  /** RequestPrice queries the latest price on standard price reference oracle script. */
   RequestPrice(
     request: QueryRequestPriceRequest
   ): Promise<QueryRequestPriceResponse>;
@@ -2857,6 +3122,13 @@ export interface Query {
   RequestReports(
     request: QueryRequestReportsRequest
   ): Promise<QueryRequestReportsResponse>;
+  DataProviderReward(
+    request: QueryDataProviderRewardRequest
+  ): Promise<QueryDataProviderRewardResponse>;
+  /** PendingRequests queries list of pending request IDs assigned to given validator. */
+  PendingRequests(
+    request: QueryPendingRequestsRequest
+  ): Promise<QueryPendingRequestsResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -3015,6 +3287,34 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("oracle.v1.Query", "RequestReports", data);
     return promise.then((data) =>
       QueryRequestReportsResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  DataProviderReward(
+    request: QueryDataProviderRewardRequest
+  ): Promise<QueryDataProviderRewardResponse> {
+    const data = QueryDataProviderRewardRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "oracle.v1.Query",
+      "DataProviderReward",
+      data
+    );
+    return promise.then((data) =>
+      QueryDataProviderRewardResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  PendingRequests(
+    request: QueryPendingRequestsRequest
+  ): Promise<QueryPendingRequestsResponse> {
+    const data = QueryPendingRequestsRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "oracle.v1.Query",
+      "PendingRequests",
+      data
+    );
+    return promise.then((data) =>
+      QueryPendingRequestsResponse.decode(new _m0.Reader(data))
     );
   }
 }
