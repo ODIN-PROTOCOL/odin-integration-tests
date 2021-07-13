@@ -12,6 +12,7 @@ const {
 } = require("@cosmjs/tendermint-rpc");
 
 const config = require('../../config.json');
+const {Bech32} = require("@cosmjs/encoding");
 const {ShowBalances} = require("./utils");
 
 const {HD_DERIVATION} = require("./utils");
@@ -70,6 +71,8 @@ async function main() {
     console.log(account);
 
     await ShowBalances(account);
+
+    console.log('Staking delegations: ', await client.staking.delegatorDelegations(account.address).catch(err));
 }
 
 main()

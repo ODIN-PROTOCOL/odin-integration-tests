@@ -7,6 +7,7 @@ const {
 } = require("@cosmjs/tendermint-rpc");
 
 const config = require('../../config.json');
+const {fromBase64} = require("@cosmjs/encoding");
 const {TxResult} = require("@cosmjs/stargate/build/codec/tendermint/abci/types");
 const {StargateClient} = require("@cosmjs/stargate");
 const {QueryClient} = require("@cosmjs/stargate");
@@ -28,7 +29,9 @@ async function main() {
 
     console.log('Tx res:', fromUtf8(txs.txs[0].result.data));
 
-    const decodedTx = Tx.decode(txs.txs[0].tx);
+    // const decodedTx = Tx.decode(txs.txs[0].tx);
+
+    const decodedTx = Tx.decode(fromBase64("CpIBCo8BChwvY29zbW9zLmJhbmsudjFiZXRhMS5Nc2dTZW5kEm8KK29kaW4xbm5mZWd1cTMweDZud3hqaGF5cHh5bXgzbnVseXNwc3VqYTRhMngSK29kaW4xMm1jMHphZzJud2ZtMGY3bXlubmNtdGZ0Znc1d2FwcDlnazBsbDMaEwoEbG9raRILMTAwMDAwMDAwMDASWApQCkYKHy9jb3Ntb3MuY3J5cHRvLnNlY3AyNTZrMS5QdWJLZXkSIwohAjJ9fZD9gps8fxP7cq+reyazHJn+Y6vdIU/zdObkb/i7EgQKAggBGAcSBBDAmgwaQC5lAv3jr8pmVUFv1QopIebcgeDn/ZEU+bQK0zIDtQZxb4UWY+7FNRtKnuA/sBfSmHzGmljJ34+xzDZB6jfnnrk="));
     console.log('Tx parsed:', decodedTx);
 
     console.log('Messages:', decodedTx.body.messages);
