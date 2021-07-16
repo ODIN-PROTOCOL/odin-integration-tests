@@ -8,14 +8,11 @@ const {
 } = require("@cosmjs/tendermint-rpc");
 
 const config = require('../../config.json');
+const {err} = require("./utils");
 const {ShowBalances} = require("./utils");
 
 const {HD_DERIVATION} = require("./utils");
 const {DirectSecp256k1HdWallet} = require("@cosmjs/proto-signing");
-
-function err(reason) {
-    console.log(reason);
-}
 
 async function main() {
 
