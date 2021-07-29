@@ -18,8 +18,9 @@ async function main() {
         setupTelemetryExtension,
     );
 
-    const pagination = new Pagination(0, 10, true);
+    const pagination = new Pagination(0, 10, true, true);
     console.log("Balances: ", await client.telemetry.unverified.topBalances('minigeo', pagination).catch(err));
+    console.log("Validators: ", await client.telemetry.unverified.extendedValidators('', pagination).catch(err));
 }
 
 main()

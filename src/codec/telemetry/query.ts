@@ -6,6 +6,7 @@ import {
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
 import { Balance } from "../cosmos/base/v1beta1/balance";
+import { Validator } from "../cosmos/base/v1beta1/validator";
 
 export const protobufPackage = "telemetry";
 
@@ -24,6 +25,17 @@ export interface QueryTopBalancesRequest {
  * method.
  */
 export interface QueryTopBalancesResponse {
+  balances: Balance[];
+  pagination?: PageResponse;
+}
+
+export interface QueryExtendedValidatorsRequest {
+  status: string;
+  pagination?: PageRequest;
+}
+
+export interface QueryExtendedValidatorsResponse {
+  validators: Validator[];
   balances: Balance[];
   pagination?: PageResponse;
 }
@@ -235,12 +247,231 @@ export const QueryTopBalancesResponse = {
   },
 };
 
+const baseQueryExtendedValidatorsRequest: object = { status: "" };
+
+export const QueryExtendedValidatorsRequest = {
+  encode(
+    message: QueryExtendedValidatorsRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.status !== "") {
+      writer.uint32(10).string(message.status);
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryExtendedValidatorsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryExtendedValidatorsRequest,
+    } as QueryExtendedValidatorsRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.status = reader.string();
+          break;
+        case 2:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryExtendedValidatorsRequest {
+    const message = {
+      ...baseQueryExtendedValidatorsRequest,
+    } as QueryExtendedValidatorsRequest;
+    if (object.status !== undefined && object.status !== null) {
+      message.status = String(object.status);
+    } else {
+      message.status = "";
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryExtendedValidatorsRequest): unknown {
+    const obj: any = {};
+    message.status !== undefined && (obj.status = message.status);
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryExtendedValidatorsRequest>
+  ): QueryExtendedValidatorsRequest {
+    const message = {
+      ...baseQueryExtendedValidatorsRequest,
+    } as QueryExtendedValidatorsRequest;
+    if (object.status !== undefined && object.status !== null) {
+      message.status = object.status;
+    } else {
+      message.status = "";
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryExtendedValidatorsResponse: object = {};
+
+export const QueryExtendedValidatorsResponse = {
+  encode(
+    message: QueryExtendedValidatorsResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.validators) {
+      Validator.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.balances) {
+      Balance.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(26).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryExtendedValidatorsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryExtendedValidatorsResponse,
+    } as QueryExtendedValidatorsResponse;
+    message.validators = [];
+    message.balances = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validators.push(Validator.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.balances.push(Balance.decode(reader, reader.uint32()));
+          break;
+        case 3:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryExtendedValidatorsResponse {
+    const message = {
+      ...baseQueryExtendedValidatorsResponse,
+    } as QueryExtendedValidatorsResponse;
+    message.validators = [];
+    message.balances = [];
+    if (object.validators !== undefined && object.validators !== null) {
+      for (const e of object.validators) {
+        message.validators.push(Validator.fromJSON(e));
+      }
+    }
+    if (object.balances !== undefined && object.balances !== null) {
+      for (const e of object.balances) {
+        message.balances.push(Balance.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryExtendedValidatorsResponse): unknown {
+    const obj: any = {};
+    if (message.validators) {
+      obj.validators = message.validators.map((e) =>
+        e ? Validator.toJSON(e) : undefined
+      );
+    } else {
+      obj.validators = [];
+    }
+    if (message.balances) {
+      obj.balances = message.balances.map((e) =>
+        e ? Balance.toJSON(e) : undefined
+      );
+    } else {
+      obj.balances = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryExtendedValidatorsResponse>
+  ): QueryExtendedValidatorsResponse {
+    const message = {
+      ...baseQueryExtendedValidatorsResponse,
+    } as QueryExtendedValidatorsResponse;
+    message.validators = [];
+    message.balances = [];
+    if (object.validators !== undefined && object.validators !== null) {
+      for (const e of object.validators) {
+        message.validators.push(Validator.fromPartial(e));
+      }
+    }
+    if (object.balances !== undefined && object.balances !== null) {
+      for (const e of object.balances) {
+        message.balances.push(Balance.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** TopBalances returns all the system balances for specific denom. */
   TopBalances(
     request: QueryTopBalancesRequest
   ): Promise<QueryTopBalancesResponse>;
+  ExtendedValidators(
+    request: QueryExtendedValidatorsRequest
+  ): Promise<QueryExtendedValidatorsResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -255,6 +486,20 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("telemetry.Query", "TopBalances", data);
     return promise.then((data) =>
       QueryTopBalancesResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  ExtendedValidators(
+    request: QueryExtendedValidatorsRequest
+  ): Promise<QueryExtendedValidatorsResponse> {
+    const data = QueryExtendedValidatorsRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "telemetry.Query",
+      "ExtendedValidators",
+      data
+    );
+    return promise.then((data) =>
+      QueryExtendedValidatorsResponse.decode(new _m0.Reader(data))
     );
   }
 }
