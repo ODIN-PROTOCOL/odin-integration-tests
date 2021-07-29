@@ -4,10 +4,11 @@ const cosmjsUtils = require("@cosmjs/stargate/build/queries/utils");
 const queryTelemetry = require("../../../dist/telemetry/query.js");
 
 class Pagination {
-    constructor(offset, limit, desc) {
+    constructor(offset, limit, desc, countTotal) {
         this.offset = new Long(offset);
         this.limit = new Long(limit);
         this.desc = desc;
+        this.countTotal = countTotal;
     }
 }
 
@@ -27,6 +28,17 @@ function setupTelemetryExtension(base) {
                             offset: pagination.offset,
                         },
                         desc: pagination.desc
+                    });
+                },
+                extendedValidators: async (status, pagination) => {
+                    return await queryService.ExtendedValidators({
+                        status: status,
+                        pagination: {
+                            key: [],
+                            limit: pagination.limit,
+                            offset: pagination.offset,
+                            countTotal: pagination.countTotal
+                        },
                     });
                 },
             },
