@@ -41,6 +41,53 @@ function setupTelemetryExtension(base) {
                         },
                     });
                 },
+                avgBlockSize: async (startDate, endDate) => {
+                    return await queryService.AvgBlockSize({
+                        startDate: startDate,
+                        endDate: endDate
+                    });
+                },
+                avgBlockTime: async (startDate, endDate) => {
+                    return await queryService.AvgBlockTime({
+                        startDate: startDate,
+                        endDate: endDate
+                    });
+                },
+                txVolume: async (startDate, endDate) => {
+                    return await queryService.TxVolume({
+                        startDate: startDate,
+                        endDate: endDate
+                    });
+                },
+                avgTxFee: async (startDate, endDate) => {
+                    return await queryService.AvgTxFee({
+                        startDate: startDate,
+                        endDate: endDate
+                    });
+                },
+                topValidators: async (startDate, endDate, pagination) => {
+                    return await queryService.TopValidators({
+                        startDate: startDate,
+                        endDate: endDate,
+                        pagination: {
+                            key: [],
+                            limit: pagination.limit,
+                            offset: pagination.offset,
+                            countTotal: pagination.countTotal
+                        }
+                    });
+                },
+                validatorBlocks: async (address, pagination) => {
+                    return await queryService.ValidatorBlocks({
+                        validatorAddress: address,
+                        pagination: {
+                            key: [],
+                            limit: pagination.limit,
+                            offset: pagination.offset,
+                        },
+                        desc: pagination.desc
+                    });
+                },
             },
         },
     };
