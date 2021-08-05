@@ -12,29 +12,37 @@ export interface AverageBlockSizePerDay {
   bytes: Long;
 }
 
-/** AverageBlockSizePerDay represents average block time per day. */
+/** AverageBlockTimePerDay represents average block time per day. */
 export interface AverageBlockTimePerDay {
   date?: Date;
   seconds: Long;
 }
 
-/** AverageBlockSizePerDay represents average transaction fee per day. */
+/** AverageTxFeePerDay represents average transaction fee per day. */
 export interface AverageTxFeePerDay {
   date?: Date;
   fee: Coin[];
 }
 
-/** AverageBlockSizePerDay represents count of transactions per day. */
+/** TxVolumePerDay represents count of transactions per day. */
 export interface TxVolumePerDay {
   date?: Date;
   volume: Long;
 }
 
-/** AverageBlockSizePerDay represents validators blocks and stake percentage. */
-export interface ValidatorsBlocks {
+/** ValidatorBlockStats represents validators blocks and stake percentage. */
+export interface ValidatorBlockStats {
   validatorAddress: string;
   blocksCount: Long;
   stakePercentage: string;
+}
+
+/** ValidatorBlock represents block approved by validator. */
+export interface ValidatorBlock {
+  height: Long;
+  time?: Date;
+  txsCount: Long;
+  reward: Coin[];
 }
 
 const baseAverageBlockSizePerDay: object = { bytes: Long.UZERO };
@@ -377,15 +385,15 @@ export const TxVolumePerDay = {
   },
 };
 
-const baseValidatorsBlocks: object = {
+const baseValidatorBlockStats: object = {
   validatorAddress: "",
   blocksCount: Long.UZERO,
   stakePercentage: "",
 };
 
-export const ValidatorsBlocks = {
+export const ValidatorBlockStats = {
   encode(
-    message: ValidatorsBlocks,
+    message: ValidatorBlockStats,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.validatorAddress !== "") {
@@ -400,10 +408,10 @@ export const ValidatorsBlocks = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorsBlocks {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorBlockStats {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = { ...baseValidatorsBlocks } as ValidatorsBlocks;
+    const message = { ...baseValidatorBlockStats } as ValidatorBlockStats;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -424,8 +432,8 @@ export const ValidatorsBlocks = {
     return message;
   },
 
-  fromJSON(object: any): ValidatorsBlocks {
-    const message = { ...baseValidatorsBlocks } as ValidatorsBlocks;
+  fromJSON(object: any): ValidatorBlockStats {
+    const message = { ...baseValidatorBlockStats } as ValidatorBlockStats;
     if (
       object.validatorAddress !== undefined &&
       object.validatorAddress !== null
@@ -450,7 +458,7 @@ export const ValidatorsBlocks = {
     return message;
   },
 
-  toJSON(message: ValidatorsBlocks): unknown {
+  toJSON(message: ValidatorBlockStats): unknown {
     const obj: any = {};
     message.validatorAddress !== undefined &&
       (obj.validatorAddress = message.validatorAddress);
@@ -461,8 +469,8 @@ export const ValidatorsBlocks = {
     return obj;
   },
 
-  fromPartial(object: DeepPartial<ValidatorsBlocks>): ValidatorsBlocks {
-    const message = { ...baseValidatorsBlocks } as ValidatorsBlocks;
+  fromPartial(object: DeepPartial<ValidatorBlockStats>): ValidatorBlockStats {
+    const message = { ...baseValidatorBlockStats } as ValidatorBlockStats;
     if (
       object.validatorAddress !== undefined &&
       object.validatorAddress !== null
@@ -483,6 +491,129 @@ export const ValidatorsBlocks = {
       message.stakePercentage = object.stakePercentage;
     } else {
       message.stakePercentage = "";
+    }
+    return message;
+  },
+};
+
+const baseValidatorBlock: object = { height: Long.UZERO, txsCount: Long.UZERO };
+
+export const ValidatorBlock = {
+  encode(
+    message: ValidatorBlock,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (!message.height.isZero()) {
+      writer.uint32(8).uint64(message.height);
+    }
+    if (message.time !== undefined) {
+      Timestamp.encode(
+        toTimestamp(message.time),
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    if (!message.txsCount.isZero()) {
+      writer.uint32(24).uint64(message.txsCount);
+    }
+    for (const v of message.reward) {
+      Coin.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ValidatorBlock {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseValidatorBlock } as ValidatorBlock;
+    message.reward = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.height = reader.uint64() as Long;
+          break;
+        case 2:
+          message.time = fromTimestamp(
+            Timestamp.decode(reader, reader.uint32())
+          );
+          break;
+        case 3:
+          message.txsCount = reader.uint64() as Long;
+          break;
+        case 4:
+          message.reward.push(Coin.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ValidatorBlock {
+    const message = { ...baseValidatorBlock } as ValidatorBlock;
+    message.reward = [];
+    if (object.height !== undefined && object.height !== null) {
+      message.height = Long.fromString(object.height);
+    } else {
+      message.height = Long.UZERO;
+    }
+    if (object.time !== undefined && object.time !== null) {
+      message.time = fromJsonTimestamp(object.time);
+    } else {
+      message.time = undefined;
+    }
+    if (object.txsCount !== undefined && object.txsCount !== null) {
+      message.txsCount = Long.fromString(object.txsCount);
+    } else {
+      message.txsCount = Long.UZERO;
+    }
+    if (object.reward !== undefined && object.reward !== null) {
+      for (const e of object.reward) {
+        message.reward.push(Coin.fromJSON(e));
+      }
+    }
+    return message;
+  },
+
+  toJSON(message: ValidatorBlock): unknown {
+    const obj: any = {};
+    message.height !== undefined &&
+      (obj.height = (message.height || Long.UZERO).toString());
+    message.time !== undefined && (obj.time = message.time.toISOString());
+    message.txsCount !== undefined &&
+      (obj.txsCount = (message.txsCount || Long.UZERO).toString());
+    if (message.reward) {
+      obj.reward = message.reward.map((e) => (e ? Coin.toJSON(e) : undefined));
+    } else {
+      obj.reward = [];
+    }
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<ValidatorBlock>): ValidatorBlock {
+    const message = { ...baseValidatorBlock } as ValidatorBlock;
+    message.reward = [];
+    if (object.height !== undefined && object.height !== null) {
+      message.height = object.height as Long;
+    } else {
+      message.height = Long.UZERO;
+    }
+    if (object.time !== undefined && object.time !== null) {
+      message.time = object.time;
+    } else {
+      message.time = undefined;
+    }
+    if (object.txsCount !== undefined && object.txsCount !== null) {
+      message.txsCount = object.txsCount as Long;
+    } else {
+      message.txsCount = Long.UZERO;
+    }
+    if (object.reward !== undefined && object.reward !== null) {
+      for (const e of object.reward) {
+        message.reward.push(Coin.fromPartial(e));
+      }
     }
     return message;
   },

@@ -13,7 +13,8 @@ import {
   AverageBlockTimePerDay,
   AverageTxFeePerDay,
   TxVolumePerDay,
-  ValidatorsBlocks,
+  ValidatorBlockStats,
+  ValidatorBlock,
 } from "../telemetry/telemetry";
 
 export const protobufPackage = "telemetry";
@@ -87,17 +88,30 @@ export interface QueryTxVolumeResponse {
   txVolumePerDay: TxVolumePerDay[];
 }
 
-/** QueryValidatorsBlocksRequest is request type for the Query/ValidatorsBlocks RPC method. */
-export interface QueryValidatorsBlocksRequest {
+/** QueryTopValidatorsRequest is request type for the Query/TopValidators RPC method. */
+export interface QueryTopValidatorsRequest {
   startDate?: Date;
   endDate?: Date;
   pagination?: PageRequest;
   desc: boolean;
 }
 
-/** QueryValidatorsBlocksResponse is response type for the Query/ValidatorsBlocks RPC method. */
-export interface QueryValidatorsBlocksResponse {
-  validatorsBlocks: ValidatorsBlocks[];
+/** QueryTopValidatorsResponse is response type for the Query/TopValidators RPC method. */
+export interface QueryTopValidatorsResponse {
+  topValidators: ValidatorBlockStats[];
+  pagination?: PageResponse;
+}
+
+/** QueryValidatorBlocksRequest is request type for the Query/ValidatorBlocks RPC method. */
+export interface QueryValidatorBlocksRequest {
+  validatorAddress: string;
+  pagination?: PageRequest;
+  desc: boolean;
+}
+
+/** QueryValidatorBlocksResponse is response type for the Query/ValidatorBlocks RPC method. */
+export interface QueryValidatorBlocksResponse {
+  blocks: ValidatorBlock[];
   pagination?: PageResponse;
 }
 
@@ -1220,11 +1234,11 @@ export const QueryTxVolumeResponse = {
   },
 };
 
-const baseQueryValidatorsBlocksRequest: object = { desc: false };
+const baseQueryTopValidatorsRequest: object = { desc: false };
 
-export const QueryValidatorsBlocksRequest = {
+export const QueryTopValidatorsRequest = {
   encode(
-    message: QueryValidatorsBlocksRequest,
+    message: QueryTopValidatorsRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.startDate !== undefined) {
@@ -1251,12 +1265,12 @@ export const QueryValidatorsBlocksRequest = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): QueryValidatorsBlocksRequest {
+  ): QueryTopValidatorsRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryValidatorsBlocksRequest,
-    } as QueryValidatorsBlocksRequest;
+      ...baseQueryTopValidatorsRequest,
+    } as QueryTopValidatorsRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -1284,10 +1298,10 @@ export const QueryValidatorsBlocksRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryValidatorsBlocksRequest {
+  fromJSON(object: any): QueryTopValidatorsRequest {
     const message = {
-      ...baseQueryValidatorsBlocksRequest,
-    } as QueryValidatorsBlocksRequest;
+      ...baseQueryTopValidatorsRequest,
+    } as QueryTopValidatorsRequest;
     if (object.startDate !== undefined && object.startDate !== null) {
       message.startDate = fromJsonTimestamp(object.startDate);
     } else {
@@ -1311,7 +1325,7 @@ export const QueryValidatorsBlocksRequest = {
     return message;
   },
 
-  toJSON(message: QueryValidatorsBlocksRequest): unknown {
+  toJSON(message: QueryTopValidatorsRequest): unknown {
     const obj: any = {};
     message.startDate !== undefined &&
       (obj.startDate = message.startDate.toISOString());
@@ -1326,11 +1340,11 @@ export const QueryValidatorsBlocksRequest = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryValidatorsBlocksRequest>
-  ): QueryValidatorsBlocksRequest {
+    object: DeepPartial<QueryTopValidatorsRequest>
+  ): QueryTopValidatorsRequest {
     const message = {
-      ...baseQueryValidatorsBlocksRequest,
-    } as QueryValidatorsBlocksRequest;
+      ...baseQueryTopValidatorsRequest,
+    } as QueryTopValidatorsRequest;
     if (object.startDate !== undefined && object.startDate !== null) {
       message.startDate = object.startDate;
     } else {
@@ -1355,15 +1369,15 @@ export const QueryValidatorsBlocksRequest = {
   },
 };
 
-const baseQueryValidatorsBlocksResponse: object = {};
+const baseQueryTopValidatorsResponse: object = {};
 
-export const QueryValidatorsBlocksResponse = {
+export const QueryTopValidatorsResponse = {
   encode(
-    message: QueryValidatorsBlocksResponse,
+    message: QueryTopValidatorsResponse,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    for (const v of message.validatorsBlocks) {
-      ValidatorsBlocks.encode(v!, writer.uint32(10).fork()).ldelim();
+    for (const v of message.topValidators) {
+      ValidatorBlockStats.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     if (message.pagination !== undefined) {
       PageResponse.encode(
@@ -1377,19 +1391,19 @@ export const QueryValidatorsBlocksResponse = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): QueryValidatorsBlocksResponse {
+  ): QueryTopValidatorsResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryValidatorsBlocksResponse,
-    } as QueryValidatorsBlocksResponse;
-    message.validatorsBlocks = [];
+      ...baseQueryTopValidatorsResponse,
+    } as QueryTopValidatorsResponse;
+    message.topValidators = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.validatorsBlocks.push(
-            ValidatorsBlocks.decode(reader, reader.uint32())
+          message.topValidators.push(
+            ValidatorBlockStats.decode(reader, reader.uint32())
           );
           break;
         case 2:
@@ -1403,17 +1417,14 @@ export const QueryValidatorsBlocksResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryValidatorsBlocksResponse {
+  fromJSON(object: any): QueryTopValidatorsResponse {
     const message = {
-      ...baseQueryValidatorsBlocksResponse,
-    } as QueryValidatorsBlocksResponse;
-    message.validatorsBlocks = [];
-    if (
-      object.validatorsBlocks !== undefined &&
-      object.validatorsBlocks !== null
-    ) {
-      for (const e of object.validatorsBlocks) {
-        message.validatorsBlocks.push(ValidatorsBlocks.fromJSON(e));
+      ...baseQueryTopValidatorsResponse,
+    } as QueryTopValidatorsResponse;
+    message.topValidators = [];
+    if (object.topValidators !== undefined && object.topValidators !== null) {
+      for (const e of object.topValidators) {
+        message.topValidators.push(ValidatorBlockStats.fromJSON(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1424,14 +1435,14 @@ export const QueryValidatorsBlocksResponse = {
     return message;
   },
 
-  toJSON(message: QueryValidatorsBlocksResponse): unknown {
+  toJSON(message: QueryTopValidatorsResponse): unknown {
     const obj: any = {};
-    if (message.validatorsBlocks) {
-      obj.validatorsBlocks = message.validatorsBlocks.map((e) =>
-        e ? ValidatorsBlocks.toJSON(e) : undefined
+    if (message.topValidators) {
+      obj.topValidators = message.topValidators.map((e) =>
+        e ? ValidatorBlockStats.toJSON(e) : undefined
       );
     } else {
-      obj.validatorsBlocks = [];
+      obj.topValidators = [];
     }
     message.pagination !== undefined &&
       (obj.pagination = message.pagination
@@ -1441,18 +1452,232 @@ export const QueryValidatorsBlocksResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryValidatorsBlocksResponse>
-  ): QueryValidatorsBlocksResponse {
+    object: DeepPartial<QueryTopValidatorsResponse>
+  ): QueryTopValidatorsResponse {
     const message = {
-      ...baseQueryValidatorsBlocksResponse,
-    } as QueryValidatorsBlocksResponse;
-    message.validatorsBlocks = [];
+      ...baseQueryTopValidatorsResponse,
+    } as QueryTopValidatorsResponse;
+    message.topValidators = [];
+    if (object.topValidators !== undefined && object.topValidators !== null) {
+      for (const e of object.topValidators) {
+        message.topValidators.push(ValidatorBlockStats.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryValidatorBlocksRequest: object = {
+  validatorAddress: "",
+  desc: false,
+};
+
+export const QueryValidatorBlocksRequest = {
+  encode(
+    message: QueryValidatorBlocksRequest,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.validatorAddress !== "") {
+      writer.uint32(10).string(message.validatorAddress);
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.desc === true) {
+      writer.uint32(24).bool(message.desc);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryValidatorBlocksRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryValidatorBlocksRequest,
+    } as QueryValidatorBlocksRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.validatorAddress = reader.string();
+          break;
+        case 2:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.desc = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryValidatorBlocksRequest {
+    const message = {
+      ...baseQueryValidatorBlocksRequest,
+    } as QueryValidatorBlocksRequest;
     if (
-      object.validatorsBlocks !== undefined &&
-      object.validatorsBlocks !== null
+      object.validatorAddress !== undefined &&
+      object.validatorAddress !== null
     ) {
-      for (const e of object.validatorsBlocks) {
-        message.validatorsBlocks.push(ValidatorsBlocks.fromPartial(e));
+      message.validatorAddress = String(object.validatorAddress);
+    } else {
+      message.validatorAddress = "";
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    if (object.desc !== undefined && object.desc !== null) {
+      message.desc = Boolean(object.desc);
+    } else {
+      message.desc = false;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryValidatorBlocksRequest): unknown {
+    const obj: any = {};
+    message.validatorAddress !== undefined &&
+      (obj.validatorAddress = message.validatorAddress);
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    message.desc !== undefined && (obj.desc = message.desc);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryValidatorBlocksRequest>
+  ): QueryValidatorBlocksRequest {
+    const message = {
+      ...baseQueryValidatorBlocksRequest,
+    } as QueryValidatorBlocksRequest;
+    if (
+      object.validatorAddress !== undefined &&
+      object.validatorAddress !== null
+    ) {
+      message.validatorAddress = object.validatorAddress;
+    } else {
+      message.validatorAddress = "";
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    if (object.desc !== undefined && object.desc !== null) {
+      message.desc = object.desc;
+    } else {
+      message.desc = false;
+    }
+    return message;
+  },
+};
+
+const baseQueryValidatorBlocksResponse: object = {};
+
+export const QueryValidatorBlocksResponse = {
+  encode(
+    message: QueryValidatorBlocksResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.blocks) {
+      ValidatorBlock.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryValidatorBlocksResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryValidatorBlocksResponse,
+    } as QueryValidatorBlocksResponse;
+    message.blocks = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.blocks.push(ValidatorBlock.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryValidatorBlocksResponse {
+    const message = {
+      ...baseQueryValidatorBlocksResponse,
+    } as QueryValidatorBlocksResponse;
+    message.blocks = [];
+    if (object.blocks !== undefined && object.blocks !== null) {
+      for (const e of object.blocks) {
+        message.blocks.push(ValidatorBlock.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryValidatorBlocksResponse): unknown {
+    const obj: any = {};
+    if (message.blocks) {
+      obj.blocks = message.blocks.map((e) =>
+        e ? ValidatorBlock.toJSON(e) : undefined
+      );
+    } else {
+      obj.blocks = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryValidatorBlocksResponse>
+  ): QueryValidatorBlocksResponse {
+    const message = {
+      ...baseQueryValidatorBlocksResponse,
+    } as QueryValidatorBlocksResponse;
+    message.blocks = [];
+    if (object.blocks !== undefined && object.blocks !== null) {
+      for (const e of object.blocks) {
+        message.blocks.push(ValidatorBlock.fromPartial(e));
       }
     }
     if (object.pagination !== undefined && object.pagination !== null) {
@@ -1470,6 +1695,10 @@ export interface Query {
   TopBalances(
     request: QueryTopBalancesRequest
   ): Promise<QueryTopBalancesResponse>;
+  /** ExtendedValidators returns validators balances. */
+  ExtendedValidators(
+    request: QueryExtendedValidatorsRequest
+  ): Promise<QueryExtendedValidatorsResponse>;
   /** AvgBlockSize returns average block size per day. */
   AvgBlockSize(
     request: QueryAvgBlockSizeRequest
@@ -1482,13 +1711,14 @@ export interface Query {
   AvgTxFee(request: QueryAvgTxFeeRequest): Promise<QueryAvgTxFeeResponse>;
   /** TxVolume returns count of transactions per day. */
   TxVolume(request: QueryTxVolumeRequest): Promise<QueryTxVolumeResponse>;
-  /** ValidatorsBlocks returns validators blocks and stake percentage. */
-  ValidatorsBlocks(
-    request: QueryValidatorsBlocksRequest
-  ): Promise<QueryValidatorsBlocksResponse>;
-  ExtendedValidators(
-    request: QueryExtendedValidatorsRequest
-  ): Promise<QueryExtendedValidatorsResponse>;
+  /** TopValidators returns validators blocks and stake percentage. */
+  TopValidators(
+    request: QueryTopValidatorsRequest
+  ): Promise<QueryTopValidatorsResponse>;
+  /** ValidatorBlocks returns validator approved blocks. */
+  ValidatorBlocks(
+    request: QueryValidatorBlocksRequest
+  ): Promise<QueryValidatorBlocksResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -1503,6 +1733,20 @@ export class QueryClientImpl implements Query {
     const promise = this.rpc.request("telemetry.Query", "TopBalances", data);
     return promise.then((data) =>
       QueryTopBalancesResponse.decode(new _m0.Reader(data))
+    );
+  }
+
+  ExtendedValidators(
+    request: QueryExtendedValidatorsRequest
+  ): Promise<QueryExtendedValidatorsResponse> {
+    const data = QueryExtendedValidatorsRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "telemetry.Query",
+      "ExtendedValidators",
+      data
+    );
+    return promise.then((data) =>
+      QueryExtendedValidatorsResponse.decode(new _m0.Reader(data))
     );
   }
 
@@ -1542,31 +1786,27 @@ export class QueryClientImpl implements Query {
     );
   }
 
-  ValidatorsBlocks(
-    request: QueryValidatorsBlocksRequest
-  ): Promise<QueryValidatorsBlocksResponse> {
-    const data = QueryValidatorsBlocksRequest.encode(request).finish();
-    const promise = this.rpc.request(
-      "telemetry.Query",
-      "ValidatorsBlocks",
-      data
-    );
+  TopValidators(
+    request: QueryTopValidatorsRequest
+  ): Promise<QueryTopValidatorsResponse> {
+    const data = QueryTopValidatorsRequest.encode(request).finish();
+    const promise = this.rpc.request("telemetry.Query", "TopValidators", data);
     return promise.then((data) =>
-      QueryValidatorsBlocksResponse.decode(new _m0.Reader(data))
+      QueryTopValidatorsResponse.decode(new _m0.Reader(data))
     );
   }
 
-  ExtendedValidators(
-    request: QueryExtendedValidatorsRequest
-  ): Promise<QueryExtendedValidatorsResponse> {
-    const data = QueryExtendedValidatorsRequest.encode(request).finish();
+  ValidatorBlocks(
+    request: QueryValidatorBlocksRequest
+  ): Promise<QueryValidatorBlocksResponse> {
+    const data = QueryValidatorBlocksRequest.encode(request).finish();
     const promise = this.rpc.request(
       "telemetry.Query",
-      "ExtendedValidators",
+      "ValidatorBlocks",
       data
     );
     return promise.then((data) =>
-      QueryExtendedValidatorsResponse.decode(new _m0.Reader(data))
+      QueryValidatorBlocksResponse.decode(new _m0.Reader(data))
     );
   }
 }
