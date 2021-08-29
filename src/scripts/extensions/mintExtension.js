@@ -25,8 +25,8 @@ function setupMintExtension(base) {
                     const {annualProvisions} = await queryService.AnnualProvisions({});
                     return annualProvisions;
                 },
-                ethIntegrationAddress: async () => {
-                    return await queryService.EthIntegrationAddress({});
+                ethIntegrationAddress: async (name) => {
+                    return await queryService.IntegrationAddress({networkName: name});
                 },
                 treasuryPool: async () => {
                     return await queryService.TreasuryPool({});
