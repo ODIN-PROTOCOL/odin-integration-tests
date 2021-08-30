@@ -49,17 +49,19 @@ export interface QueryAnnualProvisionsResponse {
 }
 
 /**
- * QueryEthIntegrationAddressRequest is request type for the
+ * QueryIntegrationAddressRequest is request type for the
  * Query/QueryEthIntegrationAddress RPC method.
  */
-export interface QueryEthIntegrationAddressRequest {}
+export interface QueryIntegrationAddressRequest {
+  networkName: string;
+}
 
 /**
- * QueryEthIntegrationAddressResponse is response type for the
+ * QueryIntegrationAddressResponse is response type for the
  * Query/QueryEthIntegrationAddress RPC method.
  */
-export interface QueryEthIntegrationAddressResponse {
-  ethIntegrationAddress: string;
+export interface QueryIntegrationAddressResponse {
+  integrationAddress: string;
 }
 
 /**
@@ -411,69 +413,15 @@ export const QueryAnnualProvisionsResponse = {
   },
 };
 
-const baseQueryEthIntegrationAddressRequest: object = {};
+const baseQueryIntegrationAddressRequest: object = { networkName: "" };
 
-export const QueryEthIntegrationAddressRequest = {
+export const QueryIntegrationAddressRequest = {
   encode(
-    _: QueryEthIntegrationAddressRequest,
+    message: QueryIntegrationAddressRequest,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    return writer;
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): QueryEthIntegrationAddressRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseQueryEthIntegrationAddressRequest,
-    } as QueryEthIntegrationAddressRequest;
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(_: any): QueryEthIntegrationAddressRequest {
-    const message = {
-      ...baseQueryEthIntegrationAddressRequest,
-    } as QueryEthIntegrationAddressRequest;
-    return message;
-  },
-
-  toJSON(_: QueryEthIntegrationAddressRequest): unknown {
-    const obj: any = {};
-    return obj;
-  },
-
-  fromPartial(
-    _: DeepPartial<QueryEthIntegrationAddressRequest>
-  ): QueryEthIntegrationAddressRequest {
-    const message = {
-      ...baseQueryEthIntegrationAddressRequest,
-    } as QueryEthIntegrationAddressRequest;
-    return message;
-  },
-};
-
-const baseQueryEthIntegrationAddressResponse: object = {
-  ethIntegrationAddress: "",
-};
-
-export const QueryEthIntegrationAddressResponse = {
-  encode(
-    message: QueryEthIntegrationAddressResponse,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.ethIntegrationAddress !== "") {
-      writer.uint32(10).string(message.ethIntegrationAddress);
+    if (message.networkName !== "") {
+      writer.uint32(10).string(message.networkName);
     }
     return writer;
   },
@@ -481,17 +429,17 @@ export const QueryEthIntegrationAddressResponse = {
   decode(
     input: _m0.Reader | Uint8Array,
     length?: number
-  ): QueryEthIntegrationAddressResponse {
+  ): QueryIntegrationAddressRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryEthIntegrationAddressResponse,
-    } as QueryEthIntegrationAddressResponse;
+      ...baseQueryIntegrationAddressRequest,
+    } as QueryIntegrationAddressRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.ethIntegrationAddress = reader.string();
+          message.networkName = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -501,41 +449,111 @@ export const QueryEthIntegrationAddressResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryEthIntegrationAddressResponse {
+  fromJSON(object: any): QueryIntegrationAddressRequest {
     const message = {
-      ...baseQueryEthIntegrationAddressResponse,
-    } as QueryEthIntegrationAddressResponse;
-    if (
-      object.ethIntegrationAddress !== undefined &&
-      object.ethIntegrationAddress !== null
-    ) {
-      message.ethIntegrationAddress = String(object.ethIntegrationAddress);
+      ...baseQueryIntegrationAddressRequest,
+    } as QueryIntegrationAddressRequest;
+    if (object.networkName !== undefined && object.networkName !== null) {
+      message.networkName = String(object.networkName);
     } else {
-      message.ethIntegrationAddress = "";
+      message.networkName = "";
     }
     return message;
   },
 
-  toJSON(message: QueryEthIntegrationAddressResponse): unknown {
+  toJSON(message: QueryIntegrationAddressRequest): unknown {
     const obj: any = {};
-    message.ethIntegrationAddress !== undefined &&
-      (obj.ethIntegrationAddress = message.ethIntegrationAddress);
+    message.networkName !== undefined &&
+      (obj.networkName = message.networkName);
     return obj;
   },
 
   fromPartial(
-    object: DeepPartial<QueryEthIntegrationAddressResponse>
-  ): QueryEthIntegrationAddressResponse {
+    object: DeepPartial<QueryIntegrationAddressRequest>
+  ): QueryIntegrationAddressRequest {
     const message = {
-      ...baseQueryEthIntegrationAddressResponse,
-    } as QueryEthIntegrationAddressResponse;
-    if (
-      object.ethIntegrationAddress !== undefined &&
-      object.ethIntegrationAddress !== null
-    ) {
-      message.ethIntegrationAddress = object.ethIntegrationAddress;
+      ...baseQueryIntegrationAddressRequest,
+    } as QueryIntegrationAddressRequest;
+    if (object.networkName !== undefined && object.networkName !== null) {
+      message.networkName = object.networkName;
     } else {
-      message.ethIntegrationAddress = "";
+      message.networkName = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryIntegrationAddressResponse: object = { integrationAddress: "" };
+
+export const QueryIntegrationAddressResponse = {
+  encode(
+    message: QueryIntegrationAddressResponse,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.integrationAddress !== "") {
+      writer.uint32(10).string(message.integrationAddress);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): QueryIntegrationAddressResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryIntegrationAddressResponse,
+    } as QueryIntegrationAddressResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.integrationAddress = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryIntegrationAddressResponse {
+    const message = {
+      ...baseQueryIntegrationAddressResponse,
+    } as QueryIntegrationAddressResponse;
+    if (
+      object.integrationAddress !== undefined &&
+      object.integrationAddress !== null
+    ) {
+      message.integrationAddress = String(object.integrationAddress);
+    } else {
+      message.integrationAddress = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryIntegrationAddressResponse): unknown {
+    const obj: any = {};
+    message.integrationAddress !== undefined &&
+      (obj.integrationAddress = message.integrationAddress);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryIntegrationAddressResponse>
+  ): QueryIntegrationAddressResponse {
+    const message = {
+      ...baseQueryIntegrationAddressResponse,
+    } as QueryIntegrationAddressResponse;
+    if (
+      object.integrationAddress !== undefined &&
+      object.integrationAddress !== null
+    ) {
+      message.integrationAddress = object.integrationAddress;
+    } else {
+      message.integrationAddress = "";
     }
     return message;
   },
@@ -681,10 +699,10 @@ export interface Query {
   AnnualProvisions(
     request: QueryAnnualProvisionsRequest
   ): Promise<QueryAnnualProvisionsResponse>;
-  /** Inflation returns ethereum integration address. */
-  EthIntegrationAddress(
-    request: QueryEthIntegrationAddressRequest
-  ): Promise<QueryEthIntegrationAddressResponse>;
+  /** Inflation returns integration address. */
+  IntegrationAddress(
+    request: QueryIntegrationAddressRequest
+  ): Promise<QueryIntegrationAddressResponse>;
   /** Inflation returns current treasury pool. */
   TreasuryPool(
     request: QueryTreasuryPoolRequest
@@ -722,17 +740,13 @@ export class QueryClientImpl implements Query {
     );
   }
 
-  EthIntegrationAddress(
-    request: QueryEthIntegrationAddressRequest
-  ): Promise<QueryEthIntegrationAddressResponse> {
-    const data = QueryEthIntegrationAddressRequest.encode(request).finish();
-    const promise = this.rpc.request(
-      "mint.Query",
-      "EthIntegrationAddress",
-      data
-    );
+  IntegrationAddress(
+    request: QueryIntegrationAddressRequest
+  ): Promise<QueryIntegrationAddressResponse> {
+    const data = QueryIntegrationAddressRequest.encode(request).finish();
+    const promise = this.rpc.request("mint.Query", "IntegrationAddress", data);
     return promise.then((data) =>
-      QueryEthIntegrationAddressResponse.decode(new _m0.Reader(data))
+      QueryIntegrationAddressResponse.decode(new _m0.Reader(data))
     );
   }
 

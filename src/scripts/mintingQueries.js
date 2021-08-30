@@ -19,7 +19,8 @@ async function main() {
     console.log("Params: ", (await client.mint.unverified.params().catch(err)));
     console.log("Inflation: ", (await client.mint.unverified.inflation().catch(err)));
     console.log("Annual Provisions: ", (await client.mint.unverified.annualProvisions().catch(err)));
-    console.log("Eth integration address: ", (await client.mint.unverified.ethIntegrationAddress().catch(err)));
+    console.log("Bsc integration address: ", (await client.mint.unverified.ethIntegrationAddress("bsc").catch(err)));
+    console.log("Eth integration address: ", (await client.mint.unverified.ethIntegrationAddress("eth").catch(err)));
     console.log("Treasury pool: ", (await client.mint.unverified.treasuryPool().catch(err)));
 }
 

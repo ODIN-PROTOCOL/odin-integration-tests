@@ -21,12 +21,17 @@ export interface Params {
   blocksPerYear: Long;
   /** max amount to withdraw per time */
   maxWithdrawalPerTime: Coin[];
-  /** the address of the smart contract */
-  ethIntegrationAddress: string;
+  /** map with smart contracts addresses */
+  integrationAddresses: { [key: string]: string };
   /** flag if minting from air */
   mintAir: boolean;
   /** eligible to withdraw accounts */
   eligibleAccountsPool: string[];
+}
+
+export interface Params_IntegrationAddressesEntry {
+  key: string;
+  value: string;
 }
 
 const baseParams: object = {
@@ -36,7 +41,6 @@ const baseParams: object = {
   inflationMin: "",
   goalBonded: "",
   blocksPerYear: Long.UZERO,
-  ethIntegrationAddress: "",
   mintAir: false,
   eligibleAccountsPool: "",
 };
@@ -67,9 +71,12 @@ export const Params = {
     for (const v of message.maxWithdrawalPerTime) {
       Coin.encode(v!, writer.uint32(58).fork()).ldelim();
     }
-    if (message.ethIntegrationAddress !== "") {
-      writer.uint32(66).string(message.ethIntegrationAddress);
-    }
+    Object.entries(message.integrationAddresses).forEach(([key, value]) => {
+      Params_IntegrationAddressesEntry.encode(
+        { key: key as any, value },
+        writer.uint32(66).fork()
+      ).ldelim();
+    });
     if (message.mintAir === true) {
       writer.uint32(72).bool(message.mintAir);
     }
@@ -84,6 +91,7 @@ export const Params = {
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseParams } as Params;
     message.maxWithdrawalPerTime = [];
+    message.integrationAddresses = {};
     message.eligibleAccountsPool = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -112,7 +120,13 @@ export const Params = {
           );
           break;
         case 8:
-          message.ethIntegrationAddress = reader.string();
+          const entry8 = Params_IntegrationAddressesEntry.decode(
+            reader,
+            reader.uint32()
+          );
+          if (entry8.value !== undefined) {
+            message.integrationAddresses[entry8.key] = entry8.value;
+          }
           break;
         case 9:
           message.mintAir = reader.bool();
@@ -131,6 +145,7 @@ export const Params = {
   fromJSON(object: any): Params {
     const message = { ...baseParams } as Params;
     message.maxWithdrawalPerTime = [];
+    message.integrationAddresses = {};
     message.eligibleAccountsPool = [];
     if (object.mintDenom !== undefined && object.mintDenom !== null) {
       message.mintDenom = String(object.mintDenom);
@@ -174,12 +189,12 @@ export const Params = {
       }
     }
     if (
-      object.ethIntegrationAddress !== undefined &&
-      object.ethIntegrationAddress !== null
+      object.integrationAddresses !== undefined &&
+      object.integrationAddresses !== null
     ) {
-      message.ethIntegrationAddress = String(object.ethIntegrationAddress);
-    } else {
-      message.ethIntegrationAddress = "";
+      Object.entries(object.integrationAddresses).forEach(([key, value]) => {
+        message.integrationAddresses[key] = String(value);
+      });
     }
     if (object.mintAir !== undefined && object.mintAir !== null) {
       message.mintAir = Boolean(object.mintAir);
@@ -216,8 +231,12 @@ export const Params = {
     } else {
       obj.maxWithdrawalPerTime = [];
     }
-    message.ethIntegrationAddress !== undefined &&
-      (obj.ethIntegrationAddress = message.ethIntegrationAddress);
+    obj.integrationAddresses = {};
+    if (message.integrationAddresses) {
+      Object.entries(message.integrationAddresses).forEach(([k, v]) => {
+        obj.integrationAddresses[k] = v;
+      });
+    }
     message.mintAir !== undefined && (obj.mintAir = message.mintAir);
     if (message.eligibleAccountsPool) {
       obj.eligibleAccountsPool = message.eligibleAccountsPool.map((e) => e);
@@ -230,6 +249,7 @@ export const Params = {
   fromPartial(object: DeepPartial<Params>): Params {
     const message = { ...baseParams } as Params;
     message.maxWithdrawalPerTime = [];
+    message.integrationAddresses = {};
     message.eligibleAccountsPool = [];
     if (object.mintDenom !== undefined && object.mintDenom !== null) {
       message.mintDenom = object.mintDenom;
@@ -273,12 +293,14 @@ export const Params = {
       }
     }
     if (
-      object.ethIntegrationAddress !== undefined &&
-      object.ethIntegrationAddress !== null
+      object.integrationAddresses !== undefined &&
+      object.integrationAddresses !== null
     ) {
-      message.ethIntegrationAddress = object.ethIntegrationAddress;
-    } else {
-      message.ethIntegrationAddress = "";
+      Object.entries(object.integrationAddresses).forEach(([key, value]) => {
+        if (value !== undefined) {
+          message.integrationAddresses[key] = String(value);
+        }
+      });
     }
     if (object.mintAir !== undefined && object.mintAir !== null) {
       message.mintAir = object.mintAir;
@@ -292,6 +314,92 @@ export const Params = {
       for (const e of object.eligibleAccountsPool) {
         message.eligibleAccountsPool.push(e);
       }
+    }
+    return message;
+  },
+};
+
+const baseParams_IntegrationAddressesEntry: object = { key: "", value: "" };
+
+export const Params_IntegrationAddressesEntry = {
+  encode(
+    message: Params_IntegrationAddressesEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== "") {
+      writer.uint32(18).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Params_IntegrationAddressesEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseParams_IntegrationAddressesEntry,
+    } as Params_IntegrationAddressesEntry;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Params_IntegrationAddressesEntry {
+    const message = {
+      ...baseParams_IntegrationAddressesEntry,
+    } as Params_IntegrationAddressesEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = String(object.key);
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = String(object.value);
+    } else {
+      message.value = "";
+    }
+    return message;
+  },
+
+  toJSON(message: Params_IntegrationAddressesEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined && (obj.value = message.value);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<Params_IntegrationAddressesEntry>
+  ): Params_IntegrationAddressesEntry {
+    const message = {
+      ...baseParams_IntegrationAddressesEntry,
+    } as Params_IntegrationAddressesEntry;
+    if (object.key !== undefined && object.key !== null) {
+      message.key = object.key;
+    } else {
+      message.key = "";
+    }
+    if (object.value !== undefined && object.value !== null) {
+      message.value = object.value;
+    } else {
+      message.value = "";
     }
     return message;
   },
