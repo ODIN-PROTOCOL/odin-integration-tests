@@ -18,7 +18,8 @@ protoc \
   "$COSMOS_PROTO_DIR/cosmos/gov/v1beta1/gov.proto" \
   "$COSMOS_PROTO_DIR/cosmos/gov/v1beta1/query.proto" \
   "$COSMOS_PROTO_DIR/cosmos/gov/v1beta1/tx.proto" \
-  "$COSMOS_PROTO_DIR/cosmos/params/v1beta1/params.proto"
+  "$COSMOS_PROTO_DIR/cosmos/params/v1beta1/params.proto" \
+  "$COSMOS_PROTO_DIR/cosmos/vesting/v1beta1/tx.proto"
 
 # Remove unnecessary codec files
 rm -rf \
