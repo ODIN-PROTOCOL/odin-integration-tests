@@ -20,11 +20,11 @@ async function main (){
   });
 
   let [account] = await wallet.getAccounts();
-  const client = await SigningStargateClient.connectWithSigner(config.rpc, wallet, {registry: registry, gasPrice: GasPrice.fromString("1loki")});
+  const client = await SigningStargateClient.connectWithSigner(config.rpc, wallet, {registry: registry, gasPrice: GasPrice.fromString("10loki")});
 
   await ShowBalances(account);
 
-  const res = await client.sendTokens(account.address, "odin157538720ldaw8v0e3mg56nnz0nwfhkkr4x5qc0", coins(20, "loki"), "");
+  const res = await client.sendTokens(account.address, "odin1k4uuv8aanj3ejs0qhqmsax9d6lzmp0pl0gkc42", coins(2500000, "loki"), "");
   console.log('Tx result:', res)
 }
 
