@@ -42,7 +42,7 @@ async function ShowBalances(account) {
     );
 
     // check our balance
-    console.log("Account:", account);
+    console.log("Address:", account.address);
     console.log("Balance:", await queryClient.bank.allBalances(account.address).catch(err));
 }
 
