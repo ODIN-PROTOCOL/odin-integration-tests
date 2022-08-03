@@ -20,7 +20,7 @@ async function main() {
     );
 
     const [{address}] = await wallet.getAccounts();
-    const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('1loki'));
+    const client = new SigningCosmosClient(config.api, address, wallet, GasPrice.fromString('0.0125loki'));
 
     let receiverAccount = await client.getAccount(config.data_provider_address);
     console.log('  Receiver balance before minting:', receiverAccount.balance);
@@ -35,7 +35,7 @@ async function main() {
     }
     const fee = {
         amount: coins(10, 'loki'),
-        gas: '200000'
+        gas: '2500'
     }
 
     const result = await client.signAndBroadcast([msg], fee, '');
